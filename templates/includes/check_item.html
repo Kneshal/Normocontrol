@@ -1,0 +1,37 @@
+<div class="card mb-3 mt-1 shadow-sm">
+  <div class="card-header"><strong>Отправлено на проверку:</strong> {{ check_item.check_date }}</div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      <strong>Группа:</strong> <a class="link-danger" href="#">{{ check_item.student.group }}</a>
+    </li>
+    <li class="list-group-item">
+      <strong>ФИО:</strong> <a class="link-danger" href="#">{{ check_item.student.first_name }} {{ check_item.student.last_name }}</a>
+    </li>
+    <li class="list-group-item">
+      <strong>Загруженные документы:</strong> <a class="link-danger" href="#">{{ check_item.docx_file }}</a>
+    </li>
+    <li class="list-group-item">
+      <strong>Сопроводительная информация:</strong> {{ check_item.info }}
+    </li>
+    {% if check_item.remarks.exist %}
+    <li class="list-group-item">
+      Замечания по работе: <br>{{ check_item.remarks }}
+    </li>
+    {% endif %}
+    <li class="list-group-item">
+      <strong>Статус: </strong> 
+      {% if not check_item.status %}
+        Работа ожидает проверки.
+      {% else %}
+        Работа проверена.
+        {% if check_item.remarks.exist %}
+          Требуется исправить замечания.
+        {% endif %}
+      {% endif %}
+    </li>
+    <li class="list-group-item">
+      <button class="btn btn-outline-dark" type="button">Проверить работу</button>
+    </li>
+  </ul>
+</div>
+{{ check_item.slug }}
