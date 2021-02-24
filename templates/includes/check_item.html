@@ -29,9 +29,20 @@
         {% endif %}
       {% endif %}
     </li>
+    {% if user.allow_manage %}
     <li class="list-group-item">
-      <button class="btn btn-outline-dark" type="button">Проверить работу</button>
+      <a class="btn btn-outline-dark" href="{% url 'verify:check_view' check_item.id %}" role="button">
+        Проверить работу
+      </a>
+      <a class="btn btn-outline-secondary" href="{% url 'verify:check_archive' check_item.id %}" role="button">
+        В архив
+      </a>
+      <a class="btn btn-outline-danger" href="{% url 'verify:check_delete' check_item.id %}" role="button">
+        Удалить заявку
+      </a>
+
     </li>
+    {% endif %}
   </ul>
 </div>
 {{ check_item.slug }}

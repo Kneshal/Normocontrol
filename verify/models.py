@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from pytils.translit import slugify
 
 User = get_user_model()
 
@@ -36,20 +35,9 @@ class CheckOut(models.Model):
         help_text='Укажите файл с дипломной работой',
         upload_to='diplomas/%Y/%m/%d/',
     )
-    slug = models.SlugField(
-        verbose_name='Slug-метка',
-        help_text='Укажите адрес для текущей проверки',
-        unique=True,
-        null=True
-    )
 
     class Meta:
-        ordering = ['-check_date']
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(f'check-%Y%m%d%H%M-{self.student.username}')
-        super().save(*args, **kwargs)
+        ordering = ['check_date']
 
 
 class Remark(models.Model):

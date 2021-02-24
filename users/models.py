@@ -50,9 +50,3 @@ class CustomUser(AbstractUser):
         help_text='Открывает пользователю функционал проверки работ',
         null=True,
     )
-
-    def save(self, *args, **kwargs):
-        if not self.username:
-            self.username = slugify(f'{self.first_name} {self.last_name}')
-        print(self.username)
-        super().save(*args, **kwargs)

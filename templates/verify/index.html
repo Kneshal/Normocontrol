@@ -3,8 +3,7 @@
 {% block header %}{% endblock %}
 {% block description %}{% endblock %}
 {% block content %}
-
-            {% for check_item in page %}
+        {% for check_item in page %}
                {% include "includes/check_item.html" with check_item=check_item %}
             {% endfor %}            
 
