@@ -6,6 +6,7 @@ app_name = 'verify'
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('converter', views.converter, name='converter'),
     path('checks/archive/', views.archive, name='archive'),
     path('checks/new_check/', views.new_check, name='new_check'),
     path('group/new_group/', views.new_group, name='new_group'),
