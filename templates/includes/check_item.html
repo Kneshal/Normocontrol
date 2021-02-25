@@ -21,26 +21,44 @@
     <li class="list-group-item">
       <strong>Статус: </strong> 
       {% if not check_item.status %}
-        Работа ожидает проверки.
+        Работа ожидает проверки
       {% else %}
-        Работа проверена.
+        Работа проверена
         {% if check_item.remarks.exist %}
-          Требуется исправить замечания.
+          - требуется исправить замечания
         {% endif %}
       {% endif %}
     </li>
-    {% if user.allow_manage %}
-    <li class="list-group-item">
-      <a class="btn btn-outline-dark" href="{% url 'verify:check_view' check_item.id %}" role="button">
-        Проверить работу
-      </a>
-      <a class="btn btn-outline-secondary" href="{% url 'verify:check_archive' check_item.id %}" role="button">
-        В архив
-      </a>
-      <a class="btn btn-outline-danger" href="{% url 'verify:check_delete' check_item.id %}" role="button">
-        Удалить заявку
-      </a>
+    {% if user.allow_manage  %}
+      {% if not check_item.status %}
+        <li class="list-group-item">
+          <a class="btn btn-outline-dark" href="{% url 'verify:check_view' user.username check_item.id %}" role="button">
+            Проверить работу
+          </a>
+          <a class="btn btn-outline-secondary" href="{% url 'verify:check_archive' user.username check_item.id %}" role="button">
+            В архив
+          </a>
+          <a class="btn btn-outline-danger" href="{% url 'verify:check_delete' user.username check_item.id %}" role="button">
+            Удалить заявку
+          </a>
+        </li>
+      {% else %}
+      <li class="list-group-item">
+        <a class="btn btn-outline-dark" href="{% url 'verify:check_view' user.username check_item.id %}" role="button">
+          Просмотреть
+        </a>
+        <a class="btn btn-outline-danger" href="{% url 'verify:check_delete' user.username check_item.id %}" role="button">
+          Удалить заявку
+        </a>
+      </li>
+      {% endif %}
+    {% endif %}
 
+    {% if user == check_item.student %}
+    <li class="list-group-item">
+      <a class="btn btn-outline-dark" href="{% url 'verify:check_delete' user.username check_item.id %}" role="button">
+        Отменить проверку
+      </a>
     </li>
     {% endif %}
   </ul>
