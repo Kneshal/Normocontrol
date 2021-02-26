@@ -27,7 +27,7 @@ class CustomUser(AbstractUser):
         verbose_name='Группа',
         help_text='Выберите группу из списка',
         on_delete=models.SET_NULL,
-        related_name='group',
+        related_name='user',
         null=True,
     )
     birth_date = models.DateField(
