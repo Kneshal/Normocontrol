@@ -12,7 +12,7 @@ User = get_user_model()
 
 
 def user_check(func):
-    """Проверяет доступность страницы для текущего пользователя."""
+    """Декоратор. Проверяет доступность страницы для текущего пользователя."""
     def check_user(request, *args, **kwargs):
         user = get_object_or_404(User, username=kwargs['username'])
         if request.user != user:
@@ -22,7 +22,7 @@ def user_check(func):
 
 
 def user_access(func):
-    """Проверяет наличие прав нормоконтроллера для доступа к странице."""
+    """Декоратор. Проверяет наличие прав для доступа к странице."""
     def check_user(request, *args, **kwargs):
         if not request.user.allow_manage:
             return render(request, 'misc/403.html')
@@ -43,7 +43,8 @@ def index(request):
 @user_access
 def student_list(request):
     """Выводит таблицу всех зарегистрированных студентов."""
-    students = User.objects.all().exclude(username='admin').exclude(allow_manage=True)
+    students = User.objects.all().exclude(username='admin')
+    students = students.exclude(allow_manage=True)
     context = {'students': students}
     return render(request, 'verify/student_list.html', context)
 

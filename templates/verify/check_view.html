@@ -3,7 +3,7 @@
 {% block header %}Проверка №{{ check_item.student.checkout_student.count }}{% endblock %}
 {% block description %}{% endblock %}
 {% block content %}
-
+{% load static %}
 <table class="table">
     <tbody>
         <tr>
@@ -13,7 +13,17 @@
         </tr>
     </tbody>
 </table>
-<!-- https://developers.google.com/docs/api/quickstart/js -->
+
+{{ check_item.docx_file.url }}
+<iframe src="https://docs.google.com/viewer?url=https://www.xeroxscanners.com/downloads/Manuals/XMS/PDF_Converter_Pro_Quick_Reference_Guide.RU.pdf&embedded=true"
+    width="100%" height="600" style="border: 1;"></iframe>
+<iframe src="https://docs.google.com/viewer?url={{ check_item.docx_file.url }}&embedded=true"
+    width="100%" height="600" style="border: 1;"></iframe>
+    
+<!--
+<iframe src="https://docs.google.com/document/d/e/2PACX-1vT153lW4i1bqzE4FyHJMvJz4gmy4VJW1SQDqmdpXbHpsO4sCx7yKah_of7tVCf0ERR3gA4IVaTegB2k/pub?embedded=true" width="1000" height="500" style="border: 1;></iframe>
+
+ https://developers.google.com/docs/api/quickstart/js  embed_code смотреть в аккаунте гугла
 
 <script type="text/javascript" src="https://www.google.com/books/jsapi.js"></script>
 <script type="text/javascript">
@@ -28,5 +38,5 @@
 </script>
 <div id="viewerCanvas" style="width: 600px; height: 500px"></div>
 <iframe src="http://docs.google.com/viewer?url=https://www.xeroxscanners.com/downloads/Manuals/XMS/PDF_Converter_Pro_Quick_Reference_Guide.RU.pdf&embedded=true"
-    width="1000" height="500" style="border: 1;"></iframe>
+    width="1000" height="500" style="border: 1;"></iframe>-->
 {% endblock %} 
