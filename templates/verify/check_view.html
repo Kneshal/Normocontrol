@@ -18,12 +18,26 @@
 
 <div class="card-body">                
   <form method="post" action="{% url 'verify:add_remark' username check_item.id %}" enctype="multipart/form-data">
-      {% csrf_token %}                
-      {% for field in form %}
+      {% csrf_token %}   
+      {% for field in form_1 %}
+      <div class="form-group row" aria-required='{% if field.field.required %}"true"{% else %}"false"{% endif %}'>
+        <label for="{{ field.id_for_label }}" class="col-md-3 col-form-label text-md-right">
+            {{ field.label }}
+        </label>
+        <div class="col-md-2 m-1">          
+              {{ field|addclass:"form-control" }}
+          </div>                
+      </div>
+      {% endfor %}
+      <div class="col-md-9">
+        <label for="{{ field.id_for_label }}" class=" col-form-label text-md-right">{{ form_2.err_1.label }}</label>
+          {{ form_2.err_1}}
+      </div>                                
+      {% for field in form_2 %}
       <div class="form-group row" aria-required='{% if field.field.required %}"true"{% else %}"false"{% endif %}'>
 
           <div class="col-md-9">
-            <label for="{{ field.id_for_label }}" class="col-md-4 col-form-label text-md-right">{{ field.label }}</label>
+            <label for="{{ field.id_for_label }}" class="col-md-5 col-form-label text-md-right">{{ field.label }}</label>
               {{ field }}
           </div>                
       </div>

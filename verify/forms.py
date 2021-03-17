@@ -5,13 +5,27 @@ from users.models import Group
 from . import constants as cts
 
 
-class RemarkForm(forms.Form):
-    PAGE_CHOICES = (('1', '-1'), ('2', '-2'))
-    page_number = forms.ChoiceField(label='Номер страницы',
-                                    choices=PAGE_CHOICES)
-    paragraph = forms.ChoiceField(label='Номер абзаца',
-                                  choices=PAGE_CHOICES)
+class RemarkNavForm(forms.Form):
+    """Форма для указания страницы и абзаца замечания."""
+    SECTION_CHOICES = (
+        ('title', 'Титульный лист'),
+        ('task', 'Индивидуальное задание на ВКР'),
+        ('abstract', 'Реферат'),
+        ('contents', 'Оглавление'),
+        ('introduction', 'Введение'),
+        ('body', 'Основная часть'),
+        ('conclusion', 'Заключение'),
+        ('source', 'Список использованных источников'),
+        ('attachment', 'Приложение'),
+    )
+    section = forms.ChoiceField(label='Раздел ПЗ страницы',
+                                choices=SECTION_CHOICES)
+    page_number = forms.IntegerField(label='Номер страницы', required=False)
+    paragraph = forms.IntegerField(label='Номер абзаца', required=False)
 
+
+class RemarkErrorForm(forms.Form):
+    """Форма выбора замечания."""
     err_1 = forms.BooleanField(label=cts.ERROR_1, required=False)
     err_2 = forms.BooleanField(label=cts.ERROR_2, required=False)
     err_3 = forms.BooleanField(label=cts.ERROR_3, required=False)
@@ -23,6 +37,23 @@ class RemarkForm(forms.Form):
     err_9 = forms.BooleanField(label=cts.ERROR_9, required=False)
     err_10 = forms.BooleanField(label=cts.ERROR_10, required=False)
     err_11 = forms.BooleanField(label=cts.ERROR_11, required=False)
+    err_12 = forms.BooleanField(label=cts.ERROR_12, required=False)
+    err_13 = forms.BooleanField(label=cts.ERROR_13, required=False)
+    err_14 = forms.BooleanField(label=cts.ERROR_14, required=False)
+    err_15 = forms.BooleanField(label=cts.ERROR_15, required=False)
+    err_16 = forms.BooleanField(label=cts.ERROR_16, required=False)
+    err_17 = forms.BooleanField(label=cts.ERROR_17, required=False)
+    err_18 = forms.BooleanField(label=cts.ERROR_18, required=False)
+    err_19 = forms.BooleanField(label=cts.ERROR_19, required=False)
+    err_20 = forms.BooleanField(label=cts.ERROR_20, required=False)
+    err_21 = forms.BooleanField(label=cts.ERROR_21, required=False)
+    err_22 = forms.BooleanField(label=cts.ERROR_22, required=False)
+    err_23 = forms.BooleanField(label=cts.ERROR_23, required=False)
+    err_24 = forms.BooleanField(label=cts.ERROR_24, required=False)
+    err_25 = forms.BooleanField(label=cts.ERROR_25, required=False)
+    err_26 = forms.BooleanField(label=cts.ERROR_26, required=False)
+    err_27 = forms.BooleanField(label=cts.ERROR_27, required=False)
+    err_28 = forms.BooleanField(label=cts.ERROR_28, required=False)
 
 
 class CheckForm(forms.ModelForm):

@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
-from .forms import CheckForm, GroupForm, RemarkForm
+from .forms import CheckForm, GroupForm, RemarkErrorForm, RemarkNavForm
 from .models import CheckOut
 from users.models import Group
 
@@ -33,7 +33,7 @@ def user_access(func):
 @login_required
 @user_access
 def add_remark(request, username, check_id):
-    form = RemarkForm(request.POST or None)
+    form = RemarkErrorForm(request.POST or None)
     if form.is_valid():
         # remark = form.save(commit=False)
         for field in form.fields:
@@ -110,11 +110,13 @@ def archive(request, username):
 def check_view(request, username, check_id):
     """Выводит данные по конкретной заявке для запрошенного пользователя."""
     check_item = get_object_or_404(CheckOut, id=check_id)
-    form = RemarkForm(request.POST or None)
+    form_1 = RemarkNavForm(request.POST or None)
+    form_2 = RemarkErrorForm(request.POST or None)
     context = {
         'username': username,
         'check_item': check_item,
-        'form': form,
+        'form_1': form_1,
+        'form_2': form_2,
     }
     return render(request, 'verify/check_view.html', context)
 
@@ -158,4 +160,4 @@ def new_group(request):
     if not form.is_valid():
         return render(request, 'verify/new_group.html', {'form': form})
     form.save()
-    return redirect('verify:check_list')
+    return redirect('verify:check_list', request.user.username)

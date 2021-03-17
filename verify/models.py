@@ -41,6 +41,11 @@ class CheckOut(models.Model):
 
 
 class Remark(models.Model):
+    section = models.TextField(
+        verbose_name='Раздел ПЗ страницы',
+        help_text='Укажите раздел ПЗ',
+        max_length=100,
+    )
     page_number = models.PositiveSmallIntegerField(
         verbose_name='Номер страницы',
         help_text='Укажите номер страницы',
