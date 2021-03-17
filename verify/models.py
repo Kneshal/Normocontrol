@@ -41,10 +41,27 @@ class CheckOut(models.Model):
 
 
 class Remark(models.Model):
+    page_number = models.PositiveSmallIntegerField(
+        verbose_name='Номер страницы',
+        help_text='Укажите номер страницы',
+    )
+    paragraph = models.PositiveSmallIntegerField(
+        verbose_name='Номер абзаца',
+        help_text='Укажите номер абзаца',
+        null=True,
+        blank=True,
+    )
     text = models.TextField(
         verbose_name='Текст замечания',
         help_text='Введите текст замечания',
-        max_length=1000
+        max_length=1000,
+    )
+    note = models.TextField(
+        verbose_name='Текст примечания',
+        help_text='Введите текст примечания',
+        max_length=2000,
+        null=True,
+        blank=True,
     )
     author = models.ForeignKey(User,
                                verbose_name='Автор замечания',
@@ -61,3 +78,6 @@ class Remark(models.Model):
         auto_now_add=True,
         db_index=True,
     )
+
+    class Meta:
+        ordering = ['check_date']

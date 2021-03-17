@@ -3,6 +3,7 @@
 {% block header %}Проверка №{{ check_item.student.checkout_student.count }}{% endblock %}
 {% block description %}{% endblock %}
 {% block content %}
+{% load user_filters %}
 
 <table class="table">
     <tbody>
@@ -13,20 +14,26 @@
         </tr>
     </tbody>
 </table>
-<!-- https://developers.google.com/docs/api/quickstart/js -->
 
-<script type="text/javascript" src="https://www.google.com/books/jsapi.js"></script>
-<script type="text/javascript">
-  google.books.load();
 
-  function initialize() {
-    var viewer = new google.books.DefaultViewer(document.getElementById('viewerCanvas'));
-    viewer.load('ISBN:0738531367');
-  }
+<div class="card-body">                
+  <form method="post" action="{% url 'verify:add_remark' username check_item.id %}" enctype="multipart/form-data">
+      {% csrf_token %}                
+      {% for field in form %}
+      <div class="form-group row" aria-required='{% if field.field.required %}"true"{% else %}"false"{% endif %}'>
 
-  google.books.setOnLoadCallback(initialize);
-</script>
-<div id="viewerCanvas" style="width: 600px; height: 500px"></div>
-<iframe src="http://docs.google.com/viewer?url=https://www.xeroxscanners.com/downloads/Manuals/XMS/PDF_Converter_Pro_Quick_Reference_Guide.RU.pdf&embedded=true"
-    width="1000" height="500" style="border: 1;"></iframe>
+          <div class="col-md-9">
+            <label for="{{ field.id_for_label }}" class="col-md-4 col-form-label text-md-right">{{ field.label }}</label>
+              {{ field }}
+          </div>                
+      </div>
+      {% endfor %}                
+               
+          <button type="submit" class="btn btn-danger mt-2">
+              Добавить замечание
+          </button>               
+
+  </form>
+</div> <!-- card body -->
+
 {% endblock %} 

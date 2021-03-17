@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
-from .forms import CheckForm, GroupForm
+from .forms import CheckForm, GroupForm, RemarkForm
 from .models import CheckOut
 from users.models import Group
 
@@ -12,7 +12,7 @@ User = get_user_model()
 
 
 def user_check(func):
-    """Проверяет доступность страницы для текущего пользователя."""
+    """Декоратор. Проверяет доступность страницы для текущего пользователя."""
     def check_user(request, *args, **kwargs):
         user = get_object_or_404(User, username=kwargs['username'])
         if request.user != user:
@@ -22,7 +22,7 @@ def user_check(func):
 
 
 def user_access(func):
-    """Проверяет наличие прав нормоконтроллера для доступа к странице."""
+    """Декоратор. Проверяет наличие прав нормоконтроллера."""
     def check_user(request, *args, **kwargs):
         if not request.user.allow_manage:
             return render(request, 'misc/403.html')
@@ -30,8 +30,18 @@ def user_access(func):
     return check_user
 
 
-def new_remark(request):
-    pass
+@login_required
+@user_access
+def add_remark(request, username, check_id):
+    form = RemarkForm(request.POST or None)
+    if form.is_valid():
+        # remark = form.save(commit=False)
+        for field in form.fields:
+            temp = form.cleaned_data.get(field)
+            if temp:
+                print('Ошибка - ', form.fields.get(field).label)
+
+    return redirect('verify:check_view', username, check_id)
 
 
 def index(request):
@@ -43,7 +53,9 @@ def index(request):
 @user_access
 def student_list(request):
     """Выводит таблицу всех зарегистрированных студентов."""
-    students = User.objects.all().exclude(username='admin').exclude(allow_manage=True)
+    students = User.objects.all().exclude(username='admin').exclude(
+        allow_manage=True
+    )
     context = {'students': students}
     return render(request, 'verify/student_list.html', context)
 
@@ -99,8 +111,11 @@ def archive(request, username):
 def check_view(request, username, check_id):
     """Выводит данные по конкретной заявке для запрошенного пользователя."""
     check_item = get_object_or_404(CheckOut, id=check_id)
+    form = RemarkForm(request.POST or None)
     context = {
+        'username': username,
         'check_item': check_item,
+        'form': form,
     }
     return render(request, 'verify/check_view.html', context)
 
