@@ -53,9 +53,8 @@ def index(request):
 @user_access
 def student_list(request):
     """Выводит таблицу всех зарегистрированных студентов."""
-    students = User.objects.all().exclude(username='admin').exclude(
-        allow_manage=True
-    )
+    students = User.objects.all().exclude(username='admin')
+    students = students.exclude(allow_manage=True)
     context = {'students': students}
     return render(request, 'verify/student_list.html', context)
 
