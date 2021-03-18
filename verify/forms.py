@@ -18,13 +18,18 @@ class RemarkNavForm(forms.Form):
         ('source', 'Список использованных источников'),
         ('attachment', 'Приложение'),
     )
-    section = forms.ChoiceField(label='Раздел ПЗ страницы',
+    section = forms.ChoiceField(label='Раздел ПЗ',
                                 choices=SECTION_CHOICES)
     page_number = forms.IntegerField(label='Номер страницы', required=False)
     paragraph = forms.IntegerField(label='Номер абзаца', required=False)
+    custom_error = forms.CharField(
+        label='Примечание:',
+        widget=forms.Textarea(),
+        required=False
+    )
 
 
-class RemarkErrorForm(forms.Form):
+class RemarkStandartErrorForm(forms.Form):
     """Форма выбора замечания."""
     err_1 = forms.BooleanField(label=cts.ERROR_1, required=False)
     err_2 = forms.BooleanField(label=cts.ERROR_2, required=False)

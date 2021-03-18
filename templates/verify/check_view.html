@@ -23,22 +23,51 @@
     <div class="container">
         <div class="row">
             <div class="col-sm">
-            <div class="card mb-1">
-                <div class="card-header">
-                    Общие ошибки
+                <div class="card mb-2">
+                    <div class="card-header">
+                        Расположение ошибки
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group row">
+                                    <label class="col-md-4 col-form-label">
+                                        {{ form_1.section.label }}
+                                    </label>
+                                    <div class="col-md-7 m-1">          
+                                        {{ form_1.section|addclass:"form-control" }}
+                                    </div>                
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-md-4 col-form-label">
+                                        {{ form_1.page_number.label }}
+                                    </label>
+                                    <div class="col-md-7 m-1">          
+                                        {{ form_1.page_number|addclass:"form-control" }}
+                                    </div>                
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-md-4  col-form-label">
+                                        {{ form_1.paragraph.label }}
+                                    </label>
+                                    <div class="col-md-7 m-1">          
+                                        {{ form_1.paragraph|addclass:"form-control" }}
+                                    </div>                
+                                </div>                            
+                            </div>
+                            <div class="col">
+                                {{ form_1.custom_error.label }}
+                                <div class="form-group">                                           
+                                    {{ form_1.custom_error|addclass:"form-control" }}
+                                </div>   
+                            </div>
+                        </div>
+                        
+                    </div>
                 </div>
-                {% for field in form_1 %}
-                <div class="form-group row p-1" aria-required='{% if field.field.required %}"true"{% else %}"false"{% endif %}'>
-                    <label for="{{ field.id_for_label }}" class="col-md-3 col-form-label text-md-right">
-                        {{ field.label }}
-                    </label>
-                    <div class="col-md-2 m-1">          
-                        {{ field|addclass:"form-control" }}
-                    </div>                
-                </div>
-                {% endfor %}
             </div>
-        </div>
         </div>
     </div>
    
@@ -46,8 +75,8 @@
     <div class="container">
         <div class="row">
             <div class="col-sm">
-                
-                <div class="card mb-1">
+                                
+                <div class="card mb-2">
                     <div class="card-header">
                         Общие ошибки
                       </div>
@@ -63,7 +92,7 @@
                     </div>
                 </div>  
 
-                <div class="card mb-1">
+                <div class="card mb-2">
                     <div class="card-header">
                         Заголовки
                       </div>
@@ -76,7 +105,7 @@
                     </div>
                 </div>
 
-                <div class="card mb-1">
+                <div class="card mb-2">
                     <div class="card-header">
                         Таблицы
                       </div>
@@ -91,7 +120,7 @@
 
     
 
-                <div class="card mb-1">
+                <div class="card mb-2">
                     <div class="card-header">
                         Формулы
                       </div>
@@ -107,7 +136,7 @@
             </div>
             <div class="col-sm">
 
-                <div class="card mb-1">
+                <div class="card mb-2">
                     <div class="card-header">
                         Текст
                       </div>
@@ -121,7 +150,7 @@
                     </div>
                 </div>
 
-                <div class="card mb-1">
+                <div class="card mb-2">
                     <div class="card-header">
                         Списки
                       </div>
@@ -133,7 +162,7 @@
                 </div> 
 
 
-                <div class="card mb-1">
+                <div class="card mb-2">
                     <div class="card-header">
                         Рисунки
                       </div>
@@ -148,7 +177,7 @@
                 </div>
 
 
-                <div class="card mb-1">
+                <div class="card mb-2">
                     <div class="card-header">
                         Ссылки
                       </div>
@@ -160,7 +189,7 @@
                     </div>
                 </div>  
 
-                <div class="card mb-1">
+                <div class="card mb-2">
                     <div class="card-header">
                         Рамки
                       </div>
@@ -175,23 +204,16 @@
             </div>
         </div>
     </div>      
-
- 
-
- 
-
-
-
-
-
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <button type="submit" class="btn btn-danger mt-2">Добавить замечание</button>    
+            </div>
+        </div>
+    </div>
 
 
-
-
-
-
-
-    <button type="submit" class="btn btn-danger mt-2">Добавить замечание</button>               
+           
 
   </form>
 </div>
