@@ -24,7 +24,7 @@ class RemarkNavForm(forms.Form):
     paragraph = forms.IntegerField(label='Номер абзаца', required=False)
     custom_error = forms.CharField(
         label='Примечание:',
-        widget=forms.Textarea(),
+        widget=forms.Textarea(attrs={'style': 'height: 105px'}),
         required=False
     )
 

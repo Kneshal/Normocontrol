@@ -8,3 +8,8 @@ register = template.Library()
 @register.filter
 def addclass(field, css):
     return field.as_widget(attrs={"class": css})
+
+
+@register.filter
+def change_height(field, height):
+    return field.as_widget(attrs={"style": height})
