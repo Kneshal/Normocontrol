@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
 from .forms import CheckForm, GroupForm, RemarkStandartErrorForm, RemarkNavForm
-from .models import CheckOut
+from .models import CheckOut, Remark
 from users.models import Group
 
 User = get_user_model()
@@ -33,14 +33,47 @@ def user_access(func):
 @login_required
 @user_access
 def add_remark(request, username, check_id):
-    form = RemarkStandartErrorForm(request.POST or None)
-    if form.is_valid():
-        # remark = form.save(commit=False)
-        for field in form.fields:
-            temp = form.cleaned_data.get(field)
-            if temp:
-                print('Ошибка - ', form.fields.get(field).label)
+    """Добавляет замечание на основе формы."""
+    check_item = get_object_or_404(CheckOut, id=check_id)
+    form_1 = RemarkNavForm(request.POST or None)
+    form_2 = RemarkStandartErrorForm(request.POST or None)
+    if form_1.is_valid() and form_2.is_valid():
+        choice = form_1.cleaned_data['section']
+        section = dict(form_1.fields['section'].choices)[choice]
+        page_number = form_1.cleaned_data.get('page_number')
+        paragraph = form_1.cleaned_data.get('paragraph')
+        custom_error = form_1.cleaned_data.get('custom_error')
+        # Создаем кастомную ошибку, если это требуется
+        if custom_error != '':
+            Remark.objects.get_or_create(
+                section=section,
+                page_number=page_number,
+                paragraph=paragraph,
+                text=custom_error,
+                author=request.user,
+                check_out=check_item
+            )
+        # Проверяем поля формы и создаем ошибки
+        for field in form_2.fields:
+            checkbox_result = form_2.cleaned_data.get(field)
+            if checkbox_result:
+                Remark.objects.get_or_create(
+                    section=section,
+                    page_number=page_number,
+                    paragraph=paragraph,
+                    text=form_2.fields.get(field).label,
+                    author=request.user,
+                    check_out=check_item
+                )
+    return redirect('verify:check_view', username, check_id)
 
+
+@login_required
+@user_access
+def delete_remark(request, username, check_id, remark_id):
+    """Удаляет замечание."""
+    remark = get_object_or_404(Remark, id=remark_id)
+    remark.delete()
     return redirect('verify:check_view', username, check_id)
 
 
@@ -89,19 +122,33 @@ def check_list(request, username):
     paginator = Paginator(check_list, 10)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    context = {'page': page, 'active': True}
+    context = {'page': page, 'active': True, 'username': username}
     return render(request, 'verify/check_list.html', context)
+
+
+@login_required
+@user_access
+def student_active_check(request, username):
+    # Доделать
+    student_check = CheckOut.objects.all().filter(status=False)
+    student_check = student_check.filter(student__username=username).first()
+    print(student_check.student.get_full_name())
+    context = {'student_check': student_check}
+    return render(request, 'verify/student_active_check.html', context)
 
 
 @login_required
 @user_check
 def archive(request, username):
     """Выводит список архивных заявок для зпрошенного пользователя."""
+    user = get_object_or_404(User, username=username)
     check_list = CheckOut.objects.all().filter(status=True)
+    if not user.allow_manage:
+        check_list = check_list.filter(student__username=username)
     paginator = Paginator(check_list, 10)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    context = {'page': page, 'active': False}
+    context = {'page': page, 'active': False, 'username': username}
     return render(request, 'verify/check_list.html', context)
 
 
@@ -112,9 +159,11 @@ def check_view(request, username, check_id):
     check_item = get_object_or_404(CheckOut, id=check_id)
     form_1 = RemarkNavForm(request.POST or None)
     form_2 = RemarkStandartErrorForm(request.POST or None)
+    remarks = check_item.remark.all()
     context = {
         'username': username,
         'check_item': check_item,
+        'remarks': remarks,
         'form_1': form_1,
         'form_2': form_2,
     }
@@ -122,11 +171,21 @@ def check_view(request, username, check_id):
 
 
 @login_required
-@user_check
+@user_access
 def check_archive(request, username, check_id):
     """Отправляет определенную заявку в архив."""
     check_item = get_object_or_404(CheckOut, id=check_id)
     check_item.status = True
+    check_item.save()
+    return redirect('verify:check_list', username)
+
+
+@login_required
+@user_access
+def check_active(request, username, check_id):
+    """Делает определенную заявку активной."""
+    check_item = get_object_or_404(CheckOut, id=check_id)
+    check_item.status = False
     check_item.save()
     return redirect('verify:check_list', username)
 
@@ -143,6 +202,9 @@ def check_delete(request, username, check_id):
 @user_check
 def new_check(request, username):
     """Создает новую заявку от лица текущего пользователя."""
+    student_check = request.user.checkout_student
+    if student_check.exists() and not student_check.last().status:
+        return redirect('verify:check_list', username)
     form = CheckForm(request.POST or None, files=request.FILES or None)
     if not form.is_valid():
         return render(request, 'verify/new_check.html', {'form': form})

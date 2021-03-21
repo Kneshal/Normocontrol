@@ -31,9 +31,15 @@ class CheckOut(models.Model):
         null=True,
     )
     docx_file = models.FileField(
-        verbose_name='Файл с дипломной работой',
-        help_text='Укажите файл с дипломной работой',
+        verbose_name='Дипломная работа (расширение docx)',
+        help_text='Укажите файл с расширением docx',
         upload_to='diplomas/%Y/%m/%d/',
+    )
+    pdf_file = models.FileField(
+        verbose_name='Дипломная работа (расширение pdf)',
+        help_text='Укажите файл с расширением pdf',
+        upload_to='diplomas/%Y/%m/%d/',
+        null=True,
     )
 
     class Meta:
@@ -49,6 +55,8 @@ class Remark(models.Model):
     page_number = models.PositiveSmallIntegerField(
         verbose_name='Номер страницы',
         help_text='Укажите номер страницы',
+        null=True,
+        blank=True,
     )
     paragraph = models.PositiveSmallIntegerField(
         verbose_name='Номер абзаца',
@@ -60,13 +68,6 @@ class Remark(models.Model):
         verbose_name='Текст замечания',
         help_text='Введите текст замечания',
         max_length=1000,
-    )
-    note = models.TextField(
-        verbose_name='Текст примечания',
-        help_text='Введите текст примечания',
-        max_length=2000,
-        null=True,
-        blank=True,
     )
     author = models.ForeignKey(User,
                                verbose_name='Автор замечания',

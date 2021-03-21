@@ -1,5 +1,5 @@
 {% extends "verify/base.html" %}
-{% block title %}Главная страница нормоконтроля{% endblock %}
+{% block title %}Текущие проверки{% endblock %}
 {% block header %}
     {% if active %}
         Список активных заявок
@@ -9,8 +9,9 @@
 {% endblock %}
 {% block description %}{% endblock %}
 {% block content %}
+
     {% for check_item in page %}
-           {% include "includes/check_item.html" with check_item=check_item %}
+           {% include "includes/check_item.html" with check_item=check_item username=username %}
         {% endfor %}
     {% if page.has_other_pages %}
         {% include "includes/paginator.html" with items=page paginator=paginator %}

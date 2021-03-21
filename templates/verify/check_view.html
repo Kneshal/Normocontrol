@@ -1,10 +1,10 @@
 {% extends "verify/base.html" %}
 {% block title %}Проверка работы {{ check_item.student.get_full_name }}{% endblock %}
-{% block header %}Проверка №{{ check_item.student.checkout_student.count }}{% endblock %}
+{% block header %}Проверка №{{ check_item.student.checkout_student.count }}. Студент - {{ check_item.student.get_full_name }}. Группа - {{ check_item.student.group }}{% endblock %}
 {% block description %}{% endblock %}
 {% block content %}
 {% load user_filters %}
-
+<div class="container">
 <table class="table">
     <tbody>
         <tr>
@@ -14,13 +14,41 @@
         </tr>
     </tbody>
 </table>
+<form method="post" action="{% url 'verify:add_remark' username check_item.id %}" enctype="multipart/form-data">
+{% csrf_token %}   
 
+{% if not check_item.status %}
+<button type="submit" class="btn btn-dark mb-2">
+    Добавить замечание
+</button>    
+{% endif %}
+<button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Показать замечания ({{ check_item.remark.count}})
+</button>
+{% if not check_item.status %}
+<a type="button" class="btn btn-success mb-2" href="{% url 'verify:check_archive' username check_item.id %}" role="button">
+    Завершить проверку
+</a>
+{% endif %}
+<!-- Modal -->
 
-<div class="card-body">                
-  <form method="post" action="{% url 'verify:add_remark' username check_item.id %}" enctype="multipart/form-data">
-    {% csrf_token %}   
-      
-    <div class="container">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Замечания по работе - {{ check_item.student.get_full_name }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            {% include "includes/remarks.html" %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div> 
+
         <div class="row">
             <div class="col-sm">
                 <div class="card mb-2">
@@ -70,10 +98,10 @@
                 </div>
             </div>
         </div>
-    </div>
+
    
 
-    <div class="container">
+
         <div class="row">
             <div class="col-sm">
                                 
@@ -204,19 +232,20 @@
 
             </div>
         </div>
-    </div>      
-    <div class="container">
+       
+
         <div class="row">
-            <div class="col-sm">
-                <button type="submit" class="btn btn-danger mt-2">Добавить замечание</button>    
+            <div class="col-sm mb-2">
+                
             </div>
         </div>
-    </div>
+
 
 
            
 
   </form>
-</div>
+  
 
+</div> 
 {% endblock %} 

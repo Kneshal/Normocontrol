@@ -46,7 +46,7 @@
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="{% url 'verify:new_group' %}">Добавить группу</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                            {% else %}
+                            {% else %}            
                                 <li><a class="dropdown-item" href="{% url 'verify:new_check' user.username %}">Отправить на проверку</a></li>
                                 <li><a class="dropdown-item" href="{% url 'verify:check_list' user.username %}">Мои проверки</a></li>                            
                                 <li><hr class="dropdown-divider"></li>           

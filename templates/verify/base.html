@@ -13,7 +13,7 @@
     {% include "includes/nav.html" %}
     <main class="min-vh-100">
         <div class="container">
-            <h2>{% block header %}{% endblock %}</h2>
+            <div class="container"><h2>{% block header %}{% endblock %}</h2></div>
             <p>{% block description %}{% endblock %}</p>
             {% block content %}{% endblock %}
         </div>

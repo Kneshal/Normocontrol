@@ -1,0 +1,26 @@
+<ul class="list-group list-group-flush"></ul>
+{% for item in check_item.remark.all %}
+<li class="list-group-item">
+            <h6 class="mt-0">
+                Замечание № {{ forloop.counter }}
+            </h6>
+            {{ item.section }}            
+            {% if item.page_number %}
+                - страница {{ item.page_number }}
+            {% endif %}
+            
+            
+            {% if item.paragraph %}
+                - абзац {{ item.paragraph }}
+            {% endif %}
+            <br>
+            Описание: {{ item.text }}<br>
+            <small class="text-muted">{{ item.check_date }}</small><br>
+            
+            {% if user.allow_manage %}
+            <a class="btn btn-secondary btn-sm mt-1" href="{% url 'verify:delete_remark' username check_item.id item.id %}" role="button">
+                Удалить
+            </a>
+            {% endif %}
+        </li>
+{% endfor %}

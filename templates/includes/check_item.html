@@ -7,23 +7,16 @@
     <li class="list-group-item">
       <strong>ФИО:</strong> <a class="link-danger" href="#">{{ check_item.student.first_name }} {{ check_item.student.last_name }}</a>
     </li>
-    <li class="list-group-item">
-      <strong>Итерация:</strong> {{ check_item.student.checkout_student.count }}
-    </li>
     
-    <!--
+    
     <li class="list-group-item">
       <strong>Загруженные документы:</strong> <a class="link-danger" href="#">{{ check_item.docx_file }}</a>
     </li>
     <li class="list-group-item">
       <strong>Сопроводительная информация:</strong> {{ check_item.info }}
     </li>
-    -->
-    {% if check_item.remarks.exist %}
-    <li class="list-group-item">
-      Замечания по работе: <br>{{ check_item.remarks }}
-    </li>
-    {% endif %}
+    
+
     
     <li class="list-group-item">
       <strong>Статус: </strong> 
@@ -31,18 +24,21 @@
         Работа ожидает проверки
       {% else %}
         Работа проверена
-        {% if check_item.remarks.exist %}
+        {% if check_item.remark.exists %}
           - требуется исправить замечания
+        {% else %}
+          - замечаний нет
         {% endif %}
       {% endif %}
     </li>
-
     {% if not check_item.status %}
     <li class="list-group-item">
       {% if user.allow_manage  %}
         <a class="btn btn-outline-dark" href="{% url 'verify:check_view' user.username check_item.id %}" role="button">
           Проверить работу
         </a>
+  
+
         <a class="btn btn-outline-secondary" href="{% url 'verify:check_archive' user.username check_item.id %}" role="button">
           В архив
         </a>
@@ -56,10 +52,50 @@
       {% if user.allow_manage  %}
         <li class="list-group-item">
           <a class="btn btn-outline-dark" href="{% url 'verify:check_view' user.username check_item.id %}" role="button">
-            Просмотреть
+            Подробнее
+          </a>
+          <a class="btn btn-outline-danger" href="{% url 'verify:check_active' user.username check_item.id %}" role="button">
+            Вернуть в работу
+          </a>
+          <a class="btn btn-outline-dark" href="{% url 'verify:check_delete' user.username check_item.id %}" role="button">
+            Удалить
           </a>
         </li>
       {% endif %}
     {% endif %}
+    {% if check_item.remark.exists %}
+    <li class="list-group-item">
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{ check_item.id }}">
+        Показать замечания ({{ check_item.remark.count}})
+      </button>
+    </li>
+    {% endif %}
   </ul>
 </div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal{{ check_item.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Замечания по работе - {{ check_item.student.get_full_name }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% include "includes/remarks.html" %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+{% if check_item.remark.exists %}
+  {% include "includes/remarks.html" with username=user.username check_item=check_item %}
+{% endif %}
+-->

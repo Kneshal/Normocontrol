@@ -23,7 +23,7 @@ class RemarkNavForm(forms.Form):
     page_number = forms.IntegerField(label='Номер страницы', required=False)
     paragraph = forms.IntegerField(label='Номер абзаца', required=False)
     custom_error = forms.CharField(
-        label='Примечание:',
+        label='Замечание:',
         widget=forms.Textarea(attrs={'style': 'height: 105px'}),
         required=False
     )
@@ -64,7 +64,23 @@ class RemarkStandartErrorForm(forms.Form):
 class CheckForm(forms.ModelForm):
     class Meta:
         model = CheckOut
-        fields = ('docx_file', 'info')
+        fields = ('docx_file', 'pdf_file', 'info')
+
+    def clean_docx_file(self):
+        data = self.cleaned_data['docx_file']
+        file_type = data.name.split('.')[1]
+        if file_type != 'docx':
+            raise forms.ValidationError("Файл должен иметь расширение '.docx'",
+                                        code='invalid extension')
+        return data
+
+    def clean_pdf_file(self):
+        data = self.cleaned_data['pdf_file']
+        file_type = data.name.split('.')[1]
+        if file_type != 'pdf':
+            raise forms.ValidationError("Файл должен иметь расширение '.pdf'",
+                                        code='invalid extension')
+        return data
 
 
 class GroupForm(forms.ModelForm):
