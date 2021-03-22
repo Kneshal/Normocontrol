@@ -4,16 +4,10 @@
 {% block description %}{% endblock %}
 {% block content %}
 {% load user_filters %}
+{% load static %}
 <div class="container">
-<table class="table">
-    <tbody>
-        <tr>
-            <td>Отправлено: {{ check_item.check_date }}</td>
-            <td>Группа: <a class="link-dark" href="#">{{ check_item.student.group }}</a></td>
-            <td>ФИО: <a class="link-dark" href="#">{{ check_item.student.get_full_name }}</td>
-        </tr>
-    </tbody>
-</table>
+    <p>Отправлено {{ check_item.check_date }}, <a href="{{ check_item.pdf_file.url }}">скачать pdf</a>, <a href="{{ check_item.docx_file.url }}">скачать docx</a></p>
+
 <form method="post" action="{% url 'verify:add_remark' username check_item.id %}" enctype="multipart/form-data">
 {% csrf_token %}   
 
@@ -48,6 +42,10 @@
       </div>
     </div>
   </div> 
+<!-- может быть использовать path атрибут
+  <iframe src="https://docs.google.com/viewer?url=https://knesh.pythonanywhere.com/media/pdf_test.pdf&embedded=true"
+  width="1000" height="500" style="border: 1;"></iframe>-->
+
 
         <div class="row">
             <div class="col-sm">
