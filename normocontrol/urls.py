@@ -14,9 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf import settings
+from django.conf.urls import handler400, handler403, handler404, handler500
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.urls import include, path
+
+handler400 = "verify.views.bad_request"  # noqa
+handler403 = "verify.views.permission_denied"  # noqa
+handler404 = "verify.views.page_not_found"  # noqa
+handler500 = "verify.views.server_error"   # noqa
 
 urlpatterns = [
     path("auth/", include("users.urls")),

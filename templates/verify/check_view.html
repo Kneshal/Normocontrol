@@ -3,247 +3,226 @@
 {% block header %}Проверка №{{ check_item.student.checkout_student.count }}. Студент - {{ check_item.student.get_full_name }}. Группа - {{ check_item.student.group }}{% endblock %}
 {% block description %}{% endblock %}
 {% block content %}
-{% load user_filters %}
-{% load static %}
-<div class="container">
-    <p>Отправлено {{ check_item.check_date }}, <a href="{{ check_item.pdf_file.url }}">скачать pdf</a>, <a href="{{ check_item.docx_file.url }}">скачать docx</a></p>
-
-<form method="post" action="{% url 'verify:add_remark' username check_item.id %}" enctype="multipart/form-data">
-{% csrf_token %}   
-
-{% if not check_item.status %}
-<button type="submit" class="btn btn-dark mb-2">
-    Добавить замечание
-</button>    
-{% endif %}
-<button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Показать замечания ({{ check_item.remark.count}})
-</button>
-{% if not check_item.status %}
-<a type="button" class="btn btn-success mb-2" href="{% url 'verify:check_archive' username check_item.id %}" role="button">
-    Завершить проверку
-</a>
-{% endif %}
-<!-- Modal -->
-
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Замечания по работе - {{ check_item.student.get_full_name }}</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            {% include "includes/remarks.html" %}
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-        </div>
-      </div>
-    </div>
-  </div> 
-<!-- может быть использовать path атрибут
-  <iframe src="https://docs.google.com/viewer?url=https://knesh.pythonanywhere.com/media/pdf_test.pdf&embedded=true"
-  width="1000" height="500" style="border: 1;"></iframe>-->
-
-
-        <div class="row">
-            <div class="col-sm">
-                <div class="card mb-2">
-                    <div class="card-header">
-                        Расположение ошибки
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group row">
-                                    <label class="col-md-4 col-form-label">
-                                        {{ form_1.section.label }}
-                                    </label>
-                                    <div class="col-md-7 m-1">          
-                                        {{ form_1.section|addclass:"form-control" }}
-                                    </div>                
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-md-4 col-form-label">
-                                        {{ form_1.page_number.label }}
-                                    </label>
-                                    <div class="col-md-7 m-1">          
-                                        {{ form_1.page_number|addclass:"form-control" }}
-                                    </div>                
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-md-4  col-form-label">
-                                        {{ form_1.paragraph.label }}
-                                    </label>
-                                    <div class="col-md-7 m-1">          
-                                        {{ form_1.paragraph|addclass:"form-control" }}
-                                    </div>                
-                                </div>                            
-                            </div>
-                            <div class="col">
-                                {{ form_1.custom_error.label }}
-                                <div class="form-group mt-1">                                           
-                                    {{ form_1.custom_error|addclass:"form-control" }}
-                                </div>   
-                            </div>
-                         
+    {% load user_filters %}
+    {% load static %}
+    <div class="container">
+        <p>Отправлено {{ check_item.check_date }}, <a href="{{ check_item.pdf_file.url }}">скачать pdf</a>, <a href="{{ check_item.docx_file.url }}">скачать docx</a></p>
+        <form method="post" action="{% url 'verify:add_remark' username check_item.id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if not check_item.status %}
+                <button type="button" class="btn btn-dark mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                    Добавить замечания
+                </button>
+            {% endif %}
+                <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Показать замечания ({{ check_item.remark.count}})
+                </button>
+            {% if not check_item.status %}
+                <a type="button" class="btn btn-success mb-2" href="{% url 'verify:check_archive' username check_item.id %}" role="button">
+                    Завершить проверку
+                </a>
+            {% endif %}
+            <iframe src="https://docs.google.com/viewer?url={{ check_item.pdf_file.path }}&embedded=true" width="1000" height="500" style="border: 1;"></iframe>
+            <!-- Modal 1-->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Замечания по работе - {{ check_item.student.get_full_name }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        
+                        <div class="modal-body">
+                            {% include "includes/remarks.html" %}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <!-- Modal 2-->
+            <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Добавить замечание</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        <!-- error form body-->
+                            <div class="row">
+                                <div class="col-sm">
+                                    <div class="card mb-2">
+                                        <div class="card-header">
+                                            Расположение ошибки
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 col-form-label">
+                                                            {{ form_1.section.label }}
+                                                        </label>
+                                                        <div class="col-md-7 m-1">          
+                                                            {{ form_1.section|addclass:"form-control" }}
+                                                        </div>                
+                                                    </div>                
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4 col-form-label">
+                                                            {{ form_1.page_number.label }}
+                                                        </label>
+                                                        <div class="col-md-7 m-1">          
+                                                            {{ form_1.page_number|addclass:"form-control" }}
+                                                        </div>                
+                                                    </div>                
+                                                    <div class="form-group row">
+                                                        <label class="col-md-4  col-form-label">
+                                                            {{ form_1.paragraph.label }}
+                                                        </label>
+                                                        <div class="col-md-7 m-1">          
+                                                            {{ form_1.paragraph|addclass:"form-control" }}
+                                                        </div>                
+                                                    </div>                            
+                                                </div>
+                                                <div class="col">
+                                                    {{ form_1.custom_error.label }}
+                                                    <div class="form-group mt-1">                                           
+                                                        {{ form_1.custom_error|addclass:"form-control" }}
+                                                    </div>   
+                                                </div>                                            
+                                            </div>                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>        
+                            <div class="row">
+                                <div class="col-sm">                                                
+                                    <div class="card mb-2">
+                                        <div class="card-header">
+                                            Общие ошибки
+                                        </div>
+                                        <div class="card-body">
+                                            <ul class="list-group border-0">
+                                                <li class="list-group-item border-0">{{ form_2.err_1|addclass:"form-check-input me-1"}} {{ form_2.err_1.label }}</li>
+                                                <li class="list-group-item border-0">{{ form_2.err_2|addclass:"form-check-input me-1"}} {{ form_2.err_2.label }}</li>
+                                                <li class="list-group-item border-0">{{ form_2.err_3|addclass:"form-check-input me-1"}} {{ form_2.err_3.label }}</li>
+                                                <li class="list-group-item border-0">{{ form_2.err_4|addclass:"form-check-input me-1"}} {{ form_2.err_4.label }}</li>
+                                                <li class="list-group-item border-0">{{ form_2.err_5|addclass:"form-check-input me-1"}} {{ form_2.err_5.label }}</li>
+                                                <li class="list-group-item border-0">{{ form_2.err_6|addclass:"form-check-input me-1"}} {{ form_2.err_6.label }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-2">
+                                        <div class="card-header">
+                                            Заголовки
+                                        </div>
+                                        <div class="card-body">
+                                            <ul class="list-group border-0">
+                                                <li class="list-group-item border-0">{{ form_2.err_11|addclass:"form-check-input me-1"}} {{ form_2.err_11.label }}</li>
+                                                <li class="list-group-item border-0">{{ form_2.err_12|addclass:"form-check-input me-1"}} {{ form_2.err_12.label }}</li>
+                                                <li class="list-group-item border-0">{{ form_2.err_13|addclass:"form-check-input me-1"}} {{ form_2.err_13.label }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-2">
+                                        <div class="card-header">
+                                            Таблицы
+                                        </div>
+                                        <div class="card-body">
+                                            <ul class="list-group border-0">
+                                                <li class="list-group-item border-0">{{ form_2.err_15|addclass:"form-check-input me-1"}} {{ form_2.err_15.label }}</li>
+                                                <li class="list-group-item border-0">{{ form_2.err_16|addclass:"form-check-input me-1"}} {{ form_2.err_16.label }}</li>
+                                                <li class="list-group-item border-0">{{ form_2.err_17|addclass:"form-check-input me-1"}} {{ form_2.err_17.label }}</li>
+                                            </ul>
+                                        </div>
+                                    </div> 
+                                    <div class="card mb-2">
+                                        <div class="card-header">
+                                            Формулы
+                                        </div>
+                                        <div class="card-body">
+                                            <ul class="list-group border-0">
+                                                <li class="list-group-item border-0">{{ form_2.err_22|addclass:"form-check-input me-1"}} {{ form_2.err_22.label }}</li>
+                                                <li class="list-group-item border-0">{{ form_2.err_23|addclass:"form-check-input me-1"}} {{ form_2.err_23.label }}</li>
+                                                <li class="list-group-item border-0">{{ form_2.err_24|addclass:"form-check-input me-1"}} {{ form_2.err_24.label }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm">                
+                                    <div class="card mb-2">
+                                        <div class="card-header">
+                                            Текст
+                                        </div>
+                                        <div class="card-body">
+                                            <ul class="list-group border-0">
+                                                <li class="list-group-item border-0">{{ form_2.err_7|addclass:"form-check-input me-1"}} {{ form_2.err_7.label }}</li>
+                                                <li class="list-group-item border-0">{{ form_2.err_8|addclass:"form-check-input me-1"}} {{ form_2.err_8.label }}</li>
+                                                <li class="list-group-item border-0">{{ form_2.err_9|addclass:"form-check-input me-1"}} {{ form_2.err_9.label }}</li>
+                                                <li class="list-group-item border-0">{{ form_2.err_10|addclass:"form-check-input me-1"}} {{ form_2.err_10.label }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>                
+                                    <div class="card mb-2">
+                                        <div class="card-header">
+                                            Списки
+                                        </div>
+                                        <div class="card-body">
+                                            <ul class="list-group border-0">
+                                                <li class="list-group-item border-0">{{ form_2.err_14|addclass:"form-check-input me-1"}} {{ form_2.err_14.label }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-2">
+                                        <div class="card-header">
+                                            Рисунки
+                                        </div>
+                                        <div class="card-body">
+                                            <ul class="list-group border-0">
+                                                <li class="list-group-item border-0">{{ form_2.err_18|addclass:"form-check-input me-1"}} {{ form_2.err_18.label }}</li>
+                                                <li class="list-group-item border-0">{{ form_2.err_19|addclass:"form-check-input me-1"}} {{ form_2.err_19.label }}</li>
+                                                <li class="list-group-item border-0">{{ form_2.err_20|addclass:"form-check-input me-1"}} {{ form_2.err_20.label }}</li>
+                                                <li class="list-group-item border-0">{{ form_2.err_21|addclass:"form-check-input me-1"}} {{ form_2.err_21.label }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-2">
+                                        <div class="card-header">
+                                            Ссылки
+                                        </div>
+                                        <div class="card-body">
+                                            <ul class="list-group border-0">
+                                                <li class="list-group-item border-0">{{ form_2.err_27|addclass:"form-check-input me-1"}} {{ form_2.err_27.label }}</li>
+                                                <li class="list-group-item border-0">{{ form_2.err_28|addclass:"form-check-input me-1"}} {{ form_2.err_28.label }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-2">
+                                        <div class="card-header">
+                                            Рамки
+                                        </div>
+                                        <div class="card-body">
+                                            <ul class="list-group border-0">
+                                                <li class="list-group-item border-0">{{ form_2.err_25|addclass:"form-check-input me-1"}} {{ form_2.err_25.label|safe }}</li>
+                                                <li class="list-group-item border-0">{{ form_2.err_26|addclass:"form-check-input me-1"}} {{ form_2.err_26.label }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>                
+                                </div>
+                            </div>
+                            <!-- end of error form body-->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-dark">
+                                Добавить замечания
+                            </button>    
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Закрыть
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-   
-
-
-        <div class="row">
-            <div class="col-sm">
-                                
-                <div class="card mb-2">
-                    <div class="card-header">
-                        Общие ошибки
-                      </div>
-                    <div class="card-body">
-                        <ul class="list-group border-0">
-                            <li class="list-group-item border-0">{{ form_2.err_1|addclass:"form-check-input me-1"}} {{ form_2.err_1.label }}</li>
-                            <li class="list-group-item border-0">{{ form_2.err_2|addclass:"form-check-input me-1"}} {{ form_2.err_2.label }}</li>
-                            <li class="list-group-item border-0">{{ form_2.err_3|addclass:"form-check-input me-1"}} {{ form_2.err_3.label }}</li>
-                            <li class="list-group-item border-0">{{ form_2.err_4|addclass:"form-check-input me-1"}} {{ form_2.err_4.label }}</li>
-                            <li class="list-group-item border-0">{{ form_2.err_5|addclass:"form-check-input me-1"}} {{ form_2.err_5.label }}</li>
-                            <li class="list-group-item border-0">{{ form_2.err_6|addclass:"form-check-input me-1"}} {{ form_2.err_6.label }}</li>
-                        </ul>
-                    </div>
-                </div>  
-
-                <div class="card mb-2">
-                    <div class="card-header">
-                        Заголовки
-                      </div>
-                    <div class="card-body">
-                        <ul class="list-group border-0">
-                            <li class="list-group-item border-0">{{ form_2.err_11|addclass:"form-check-input me-1"}} {{ form_2.err_11.label }}</li>
-                            <li class="list-group-item border-0">{{ form_2.err_12|addclass:"form-check-input me-1"}} {{ form_2.err_12.label }}</li>
-                            <li class="list-group-item border-0">{{ form_2.err_13|addclass:"form-check-input me-1"}} {{ form_2.err_13.label }}</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="card mb-2">
-                    <div class="card-header">
-                        Таблицы
-                      </div>
-                    <div class="card-body">
-                        <ul class="list-group border-0">
-                            <li class="list-group-item border-0">{{ form_2.err_15|addclass:"form-check-input me-1"}} {{ form_2.err_15.label }}</li>
-                            <li class="list-group-item border-0">{{ form_2.err_16|addclass:"form-check-input me-1"}} {{ form_2.err_16.label }}</li>
-                            <li class="list-group-item border-0">{{ form_2.err_17|addclass:"form-check-input me-1"}} {{ form_2.err_17.label }}</li>
-                        </ul>
-                    </div>
-                </div> 
-
-    
-
-                <div class="card mb-2">
-                    <div class="card-header">
-                        Формулы
-                      </div>
-                    <div class="card-body">
-                        <ul class="list-group border-0">
-                            <li class="list-group-item border-0">{{ form_2.err_22|addclass:"form-check-input me-1"}} {{ form_2.err_22.label }}</li>
-                            <li class="list-group-item border-0">{{ form_2.err_23|addclass:"form-check-input me-1"}} {{ form_2.err_23.label }}</li>
-                            <li class="list-group-item border-0">{{ form_2.err_24|addclass:"form-check-input me-1"}} {{ form_2.err_24.label }}</li>
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-sm">
-
-                <div class="card mb-2">
-                    <div class="card-header">
-                        Текст
-                      </div>
-                    <div class="card-body">
-                        <ul class="list-group border-0">
-                            <li class="list-group-item border-0">{{ form_2.err_7|addclass:"form-check-input me-1"}} {{ form_2.err_7.label }}</li>
-                            <li class="list-group-item border-0">{{ form_2.err_8|addclass:"form-check-input me-1"}} {{ form_2.err_8.label }}</li>
-                            <li class="list-group-item border-0">{{ form_2.err_9|addclass:"form-check-input me-1"}} {{ form_2.err_9.label }}</li>
-                            <li class="list-group-item border-0">{{ form_2.err_10|addclass:"form-check-input me-1"}} {{ form_2.err_10.label }}</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="card mb-2">
-                    <div class="card-header">
-                        Списки
-                      </div>
-                    <div class="card-body">
-                        <ul class="list-group border-0">
-                            <li class="list-group-item border-0">{{ form_2.err_14|addclass:"form-check-input me-1"}} {{ form_2.err_14.label }}</li>
-                        </ul>
-                    </div>
-                </div> 
-
-
-                <div class="card mb-2">
-                    <div class="card-header">
-                        Рисунки
-                      </div>
-                    <div class="card-body">
-                        <ul class="list-group border-0">
-                            <li class="list-group-item border-0">{{ form_2.err_18|addclass:"form-check-input me-1"}} {{ form_2.err_18.label }}</li>
-                            <li class="list-group-item border-0">{{ form_2.err_19|addclass:"form-check-input me-1"}} {{ form_2.err_19.label }}</li>
-                            <li class="list-group-item border-0">{{ form_2.err_20|addclass:"form-check-input me-1"}} {{ form_2.err_20.label }}</li>
-                            <li class="list-group-item border-0">{{ form_2.err_21|addclass:"form-check-input me-1"}} {{ form_2.err_21.label }}</li>
-                        </ul>
-                    </div>
-                </div>
-
-
-                <div class="card mb-2">
-                    <div class="card-header">
-                        Ссылки
-                      </div>
-                    <div class="card-body">
-                        <ul class="list-group border-0">
-                            <li class="list-group-item border-0">{{ form_2.err_27|addclass:"form-check-input me-1"}} {{ form_2.err_27.label }}</li>
-                            <li class="list-group-item border-0">{{ form_2.err_28|addclass:"form-check-input me-1"}} {{ form_2.err_28.label }}</li>
-                        </ul>
-                    </div>
-                </div>  
-
-                <div class="card mb-2">
-                    <div class="card-header">
-                        Рамки
-                      </div>
-                    <div class="card-body">
-                        <ul class="list-group border-0">
-                            <li class="list-group-item border-0">{{ form_2.err_25|addclass:"form-check-input me-1"}} {{ form_2.err_25.label|safe }}</li>
-                            <li class="list-group-item border-0">{{ form_2.err_26|addclass:"form-check-input me-1"}} {{ form_2.err_26.label }}</li>
-                        </ul>
-                    </div>
-                </div>  
-
-            </div>
-        </div>
-       
-
-        <div class="row">
-            <div class="col-sm mb-2">
-                
-            </div>
-        </div>
-
-
-
-           
-
-  </form>
-  
-
-</div> 
+        </form>
+    </div> 
 {% endblock %} 
