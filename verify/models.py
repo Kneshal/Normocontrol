@@ -14,6 +14,7 @@ class CheckOut(models.Model):
     )
     check_date = models.DateTimeField(
         verbose_name='Дата проверки',
+        help_text='Укажите дату проверки',
         auto_now_add=True,
         db_index=True,
     )
@@ -81,6 +82,7 @@ class Remark(models.Model):
     )
     check_date = models.DateTimeField(
         verbose_name='Дата публикации замечания',
+        help_text='Укажите дату публикации замечания',
         auto_now_add=True,
         db_index=True,
     )
