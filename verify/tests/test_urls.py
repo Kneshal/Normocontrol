@@ -1,10 +1,9 @@
-from django.core.cache import cache
 from django.test import Client, TestCase
 from django.contrib.auth import get_user_model
 
 from verify.models import CheckOut, Remark
 from verify.tests import constants as cts
-from users.models import Group, CustomUser
+from users.models import Group
 
 User = get_user_model()
 
@@ -17,17 +16,17 @@ class VerifyURLTests(TestCase):
             title=cts.GROUP_1_TITLE,
             slug=cts.GROUP_1_SLUG,
         )
-        cls.student_1 = CustomUser.objects.create(
+        cls.student_1 = User.objects.create(
             username=cts.USERNAME_1,
             group=cls.group,
             allow_manage=False,
         )
-        cls.student_2 = CustomUser.objects.create(
+        cls.student_2 = User.objects.create(
             username=cts.USERNAME_2,
             group=cls.group,
             allow_manage=False,
         )
-        cls.controller = CustomUser.objects.create(
+        cls.controller = User.objects.create(
             username=cts.USERNAME_3,
             allow_manage=True,
         )
@@ -46,29 +45,33 @@ class VerifyURLTests(TestCase):
             author=cls.controller,
             check_out=cls.checkout
         )
-        cls.urls = {
+        cls.static_url = {
             'index': '/',
+            'unknown_page': '/unknown_page/',
+        }
+        cls.urls_need_access = {
             'student_list': '/students/',
-            'student_active_check': f'students/{cls.student_1}/',
             'group_list': '/group/',
             'new_group': '/group/new_group/',
+            'student_active_check': f'/students/{cls.controller}/',
             'group_students': f'/group/{cls.group.slug}/',
-            'check_list': f'/user/{cls.student_1}/check_list/',
-            'archive': f'/user/{cls.student_1}/archive/',
-            'new_check': f'/user/{cls.student_1}/new_check/',
-            'add_remark': (f'/user/{cls.student_1}/{cls.checkout.id}/'
+            'add_remark': (f'/user/{cls.controller}/{cls.checkout.id}/'
                            'add_remark/'),
-            'delete_remark': (f'/user/{cls.student_1}/{cls.checkout.id}/'
+            'delete_remark': (f'/user/{cls.controller}/{cls.checkout.id}/'
                               f'{cls.remark.id}/delete_remark/'),
-            'check_view': (f'/user/{cls.student_1}/{cls.checkout.id}/'
-                           'check_view/'),
+            'check_archive': (f'/user/{cls.controller}/{cls.checkout.id}/'
+                              'check_archive/'),
+            'check_active': (f'/user/{cls.controller}/{cls.checkout.id}/'
+                             'check_active/'),
+        }
+        cls.urls_user_check = {
+            'new_check': f'/user/{cls.student_1}/new_check/',
             'check_delete': (f'/user/{cls.student_1}/{cls.checkout.id}/'
                              'check_delete/'),
-            'check_archive': (f'/user/{cls.student_1}/{cls.checkout.id}/'
-                              'check_archive/'),
-            'check_active': (f'/user/{cls.student_1}/{cls.checkout.id}/'
-                             'check_active/'),
-            'unknown_page': '/unknown_page/',
+            'check_view': (f'/user/{cls.student_1}/{cls.checkout.id}/'
+                           'check_view/'),
+            'archive': f'/user/{cls.student_1}/archive/',
+            'check_list': f'/user/{cls.student_1}/check_list/',
         }
 
     def setUp(self):
@@ -79,19 +82,18 @@ class VerifyURLTests(TestCase):
         self.authorized_client_2.force_login(VerifyURLTests.student_2)
         self.authorized_client_3 = Client()
         self.authorized_client_3.force_login(VerifyURLTests.controller)
-        cache.clear()
 
     def test_unknown_url(self):
         """Проверяем доступность неизвестного url."""
         response = self.authorized_client_1.get(
-            VerifyURLTests.urls['unknown_page']
+            VerifyURLTests.static_url['unknown_page']
         )
         self.assertEqual(response.status_code, 404)
 
     def test_url_available_to_guest_user(self):
         """Страницы доступны любому пользователю."""
         url_for_guest_user = [
-            VerifyURLTests.urls['index'],
+            VerifyURLTests.static_url['index'],
         ]
         for url in url_for_guest_user:
             with self.subTest():
@@ -101,35 +103,47 @@ class VerifyURLTests(TestCase):
     def test_url_not_available_to_guest_user(self):
         """Страницы не доступны гостевому пользователю."""
         url_for_guest_user = [
-            VerifyURLTests.urls['student_list'],
-            VerifyURLTests.urls['student_active_check'],
-            VerifyURLTests.urls['group_list'],
-            VerifyURLTests.urls['new_group'],
-            VerifyURLTests.urls['group_students'],
-            VerifyURLTests.urls['check_list'],
-            VerifyURLTests.urls['archive'],
-            VerifyURLTests.urls['new_check'],
-            VerifyURLTests.urls['add_remark'],
-            VerifyURLTests.urls['delete_remark'],
-            VerifyURLTests.urls['check_view'],
-            VerifyURLTests.urls['check_archive'],
-            VerifyURLTests.urls['check_active'],
+            VerifyURLTests.urls_need_access['student_list'],
+            VerifyURLTests.urls_need_access['group_list'],
+            VerifyURLTests.urls_need_access['new_group'],
+            VerifyURLTests.urls_need_access['student_active_check'],
+            VerifyURLTests.urls_need_access['group_students'],
+            VerifyURLTests.urls_need_access['add_remark'],
+            VerifyURLTests.urls_need_access['delete_remark'],
+            VerifyURLTests.urls_need_access['check_archive'],
+            VerifyURLTests.urls_need_access['check_active'],
+            VerifyURLTests.urls_user_check['check_list'],
+            VerifyURLTests.urls_user_check['archive'],
+            VerifyURLTests.urls_user_check['new_check'],
+            VerifyURLTests.urls_user_check['check_view'],
+            VerifyURLTests.urls_user_check['check_delete'],
         ]
         for url in url_for_guest_user:
             with self.subTest():
                 response = self.guest_client.get(url)
-                self.assertEqual(response.status_code, 302, f'URL {url} работает некорректно')
-    '''
+                self.assertEqual(
+                    response.status_code,
+                    302,
+                    f'URL {url} работает некорректно.'
+                )
 
     def test_url_redirect_guest_user_to_login(self):
-        """Гостя редиректит с недоступных страниц на страницу авторизации."""
+        """Проверяем редирект на страницу логина для гостевого пользователя."""
         url_for_guest_user = [
-            PostsURLTests.urls['new_post'],
-            PostsURLTests.urls['post_edit'],
-            PostsURLTests.urls['add_comment'],
-            PostsURLTests.urls['follow_index'],
-            PostsURLTests.urls['profile_follow'],
-            PostsURLTests.urls['profile_unfollow']
+            VerifyURLTests.urls_need_access['student_list'],
+            VerifyURLTests.urls_need_access['group_list'],
+            VerifyURLTests.urls_need_access['new_group'],
+            VerifyURLTests.urls_need_access['student_active_check'],
+            VerifyURLTests.urls_need_access['group_students'],
+            VerifyURLTests.urls_need_access['add_remark'],
+            VerifyURLTests.urls_need_access['delete_remark'],
+            VerifyURLTests.urls_need_access['check_archive'],
+            VerifyURLTests.urls_need_access['check_active'],
+            VerifyURLTests.urls_user_check['check_list'],
+            VerifyURLTests.urls_user_check['archive'],
+            VerifyURLTests.urls_user_check['new_check'],
+            VerifyURLTests.urls_user_check['check_view'],
+            VerifyURLTests.urls_user_check['check_delete'],
         ]
         for url in url_for_guest_user:
             with self.subTest():
@@ -137,25 +151,148 @@ class VerifyURLTests(TestCase):
                 expected = f"/auth/login/?next={url}"
                 self.assertRedirects(response, expected)
 
-    def test_url_available_to_authorized_user(self):
-        """Страницы доступны авторизованному пользователю."""
-        url_for_auth_user = [
-            PostsURLTests.urls['new_post'],
-            PostsURLTests.urls['follow_index'],
+    def test_urls_uses_correct_template(self):
+        """URL-адрес использует соответствующий шаблон."""
+        templates_url_access_names = {
+            VerifyURLTests.static_url['index']:
+            'verify/index.html',
+            VerifyURLTests.urls_need_access['student_list']:
+            'verify/student_list.html',
+            VerifyURLTests.urls_need_access['student_active_check']:
+            'verify/student_active_check.html',
+            VerifyURLTests.urls_need_access['group_list']:
+            'verify/group_list.html',
+            VerifyURLTests.urls_need_access['new_group']:
+            'verify/new_group.html',
+            VerifyURLTests.urls_need_access['group_students']:
+            'verify/student_list.html',
+        }
+        templates_url_check_names = {
+            VerifyURLTests.urls_user_check['check_list']:
+            'verify/check_list.html',
+            VerifyURLTests.urls_user_check['archive']:
+            'verify/check_list.html',
+            VerifyURLTests.urls_user_check['check_view']:
+            'verify/check_view.html',
+        }
+        for reverse_name, template in templates_url_access_names.items():
+            with self.subTest():
+                response = self.authorized_client_3.get(reverse_name)
+                self.assertTemplateUsed(
+                    response,
+                    template,
+                    f'{reverse_name} не использует шаблон {template}'
+                )
+        for reverse_name, template in templates_url_check_names.items():
+            with self.subTest():
+                response = self.authorized_client_1.get(reverse_name)
+                self.assertTemplateUsed(
+                    response,
+                    template,
+                    f'{reverse_name} не использует шаблон {template}'
+                )
+
+    def test_url_not_available_to_student_user(self):
+        """Страницы не доступны пользователю-студенту."""
+        urls = [
+            VerifyURLTests.urls_need_access['student_list'],
+            VerifyURLTests.urls_need_access['group_list'],
+            VerifyURLTests.urls_need_access['new_group'],
+            VerifyURLTests.urls_need_access['student_active_check'],
+            VerifyURLTests.urls_need_access['group_students'],
+            VerifyURLTests.urls_need_access['add_remark'],
+            VerifyURLTests.urls_need_access['delete_remark'],
+            VerifyURLTests.urls_need_access['check_archive'],
+            VerifyURLTests.urls_need_access['check_active'],
         ]
-        for url in url_for_auth_user:
+        for url in urls:
             with self.subTest():
                 response = self.authorized_client_1.get(url)
-                self.assertEqual(response.status_code, 200)
+                self.assertEqual(response.status_code, 403)
 
-    def test_add_comment_redirect(self):
-        """Проверка редиректа после создания коммента."""
-        response = self.guest_client.get(
-            PostsURLTests.urls['add_comment'],
+    def test_url_available_to_controller_user(self):
+        """Страницы доступны нормоконтроллеру."""
+        urls_200 = [
+            VerifyURLTests.urls_need_access['student_list'],
+            VerifyURLTests.urls_need_access['group_list'],
+            VerifyURLTests.urls_need_access['new_group'],
+            VerifyURLTests.urls_need_access['student_active_check'],
+            VerifyURLTests.urls_need_access['group_students'],
+        ]
+        for url in urls_200:
+            with self.subTest():
+                response = self.authorized_client_3.get(url)
+                self.assertEqual(response.status_code, 200)
+        urls_302 = [
+            VerifyURLTests.urls_need_access['add_remark'],
+            VerifyURLTests.urls_need_access['delete_remark'],
+            VerifyURLTests.urls_need_access['check_archive'],
+            VerifyURLTests.urls_need_access['check_active'],
+        ]
+        for url in urls_302:
+            with self.subTest():
+                response = self.authorized_client_3.get(url)
+                self.assertEqual(response.status_code, 302)
+
+    def test_url_not_available_to_wrong_student_user(self):
+        """Страницы не доступны пользователю-студенту."""
+        urls = [
+            VerifyURLTests.urls_user_check['check_list'],
+            VerifyURLTests.urls_user_check['archive'],
+            VerifyURLTests.urls_user_check['new_check'],
+            VerifyURLTests.urls_user_check['check_view'],
+            VerifyURLTests.urls_user_check['check_delete'],
+        ]
+        for url in urls:
+            with self.subTest():
+                response = self.authorized_client_2.get(url)
+                self.assertEqual(response.status_code, 403)
+
+    def test_url_available_to_correct_student_user(self):
+        """Страницы не доступны пользователю-студенту."""
+        urls_200 = [
+            VerifyURLTests.urls_user_check['check_list'],
+            VerifyURLTests.urls_user_check['archive'],
+            VerifyURLTests.urls_user_check['check_view'],
+        ]
+        for url in urls_200:
+            with self.subTest():
+                response = self.authorized_client_1.get(url)
+                self.assertEqual(response.status_code, 200, f'{url}')
+        urls_302 = [
+            VerifyURLTests.urls_user_check['new_check'],
+            VerifyURLTests.urls_user_check['check_delete'],
+        ]
+        for url in urls_302:
+            with self.subTest():
+                response = self.authorized_client_1.get(url)
+                self.assertEqual(response.status_code, 302, f'{url}')
+
+    def test_url_new_check_redirect(self):
+        """Проверка редиректа после подписки на пользователя."""
+        response = self.authorized_client_1.get(
+            VerifyURLTests.urls_user_check['new_check'],
             follow=True
         )
-        expected = f"/auth/login/?next={PostsURLTests.urls['add_comment']}"
+        expected = VerifyURLTests.urls_user_check['check_list']
         self.assertRedirects(response, expected)
+
+    def test_url_check_delete_redirect(self):
+        """Проверка редиректа после подписки на пользователя."""
+        response = self.authorized_client_1.get(
+            VerifyURLTests.urls_user_check['new_check'],
+            follow=True
+        )
+        expected = VerifyURLTests.urls_user_check['check_list']
+        self.assertRedirects(response, expected)
+
+    '''
+
+            VerifyURLTests.urls_user_check['check_delete'],
+            VerifyURLTests.urls_need_access['add_remark'],
+            VerifyURLTests.urls_need_access['delete_remark'],
+            VerifyURLTests.urls_need_access['check_archive'],
+            VerifyURLTests.urls_need_access['check_active'],
 
     def test_url_profile_follow_redirect(self):
         """Проверка редиректа после подписки на пользователя."""
@@ -166,63 +303,5 @@ class VerifyURLTests(TestCase):
         expected = PostsURLTests.urls['profile']
         self.assertRedirects(response, expected)
 
-    def test_url_profile_unfollow_redirect(self):
-        """Проверка редиректа после отписки от пользователя."""
-        self.authorized_client_2.get(PostsURLTests.urls['profile_follow'])
-        response = self.authorized_client_2.get(
-            PostsURLTests.urls['profile_unfollow'],
-            follow=True
-        )
-        expected = PostsURLTests.urls['profile']
-        self.assertRedirects(response, expected)
 
-    def test_url_new_post_redirect(self):
-        """Проверка редиректа со страницы создания записи."""
-        response = self.guest_client.get(
-            PostsURLTests.urls['new_post'],
-            follow=True
-        )
-        expected = f"/auth/login/?next={PostsURLTests.urls['new_post']}"
-        self.assertRedirects(response, expected)
-
-    def test_url_edit_post_access(self):
-        """Проверка доступа к странице редактирования записи."""
-        response = self.guest_client.get(PostsURLTests.urls['post_edit'])
-        self.assertEqual(response.status_code, 302)
-        response = self.authorized_client_1.get(
-            PostsURLTests.urls['post_edit']
-        )
-        self.assertEqual(response.status_code, 200)
-        response = self.authorized_client_2.get(
-            PostsURLTests.urls['post_edit']
-        )
-        self.assertEqual(response.status_code, 302)
-
-    def test_url_edit_post_redirect(self):
-        """Проверка редиректа со страницы редактирования записи."""
-        response = self.guest_client.get(PostsURLTests.urls['post_edit'],
-                                         follow=True)
-        expected = f"/auth/login/?next={PostsURLTests.urls['post_edit']}"
-        self.assertRedirects(response, expected)
-        response = self.authorized_client_2.get(
-            PostsURLTests.urls['post_edit'],
-            follow=True
-        )
-        self.assertRedirects(response, PostsURLTests.urls['post_view'])
-
-    def test_urls_uses_correct_template(self):
-        """URL-адрес использует соответствующий шаблон."""
-        templates_url_names = {
-            PostsURLTests.urls['index']: 'posts/index.html',
-            PostsURLTests.urls['group_posts']: 'posts/group.html',
-            PostsURLTests.urls['new_post']: 'posts/new.html',
-            PostsURLTests.urls['post_edit']: 'posts/new.html',
-            PostsURLTests.urls['post_view']: 'posts/post.html',
-            PostsURLTests.urls['profile']: 'profile.html',
-            PostsURLTests.urls['follow_index']: 'follow.html',
-        }
-        for reverse_name, template in templates_url_names.items():
-            with self.subTest():
-                response = self.authorized_client_1.get(reverse_name)
-                self.assertTemplateUsed(response, template)
     '''

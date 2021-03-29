@@ -7,9 +7,11 @@
     <li class="list-group-item">
       <strong>ФИО:</strong> <a class="link-danger" href="#">{{ check_item.student.first_name }} {{ check_item.student.last_name }}</a>
     </li>
+    {% if check_item.docx_file and check_item.pdf_file %}
     <li class="list-group-item">
       <strong>Диплом:</strong> <a class="link-danger" href="{{ check_item.docx_file.url }}">скачать docx</a>, <a class="link-danger" href="{{ check_item.pdf_file.url }}">скачать pdf</a>
     </li> 
+    {% endif %}
     <li class="list-group-item">
       <strong>Сопроводительная информация:</strong> {{ check_item.info }}
     </li>    

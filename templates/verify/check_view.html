@@ -6,7 +6,9 @@
     {% load user_filters %}
     {% load static %}
     <div class="container">
-        <p>Отправлено {{ check_item.check_date }}, <a href="{{ check_item.pdf_file.url }}">скачать pdf</a>, <a href="{{ check_item.docx_file.url }}">скачать docx</a></p>
+        {% if check_item.docx_file and check_item.pdf_file %}
+            <p>Отправлено {{ check_item.check_date }}, <a href="{{ check_item.pdf_file.url }}">скачать pdf</a>, <a href="{{ check_item.docx_file.url }}">скачать docx</a></p>
+        {% endif %}
         <form method="post" action="{% url 'verify:add_remark' username check_item.id %}" enctype="multipart/form-data">
             {% csrf_token %}
             {% if not check_item.status %}
@@ -22,7 +24,9 @@
                     Завершить проверку
                 </a>
             {% endif %}
-            <iframe src="https://docs.google.com/viewer?url={{ check_item.pdf_file.url }}&embedded=true" width="100%" height="800" style="border: 1;"></iframe>
+            {% if check_item.pdf_file %}
+                <iframe src="https://docs.google.com/viewer?url={{ check_item.pdf_file.url }}&embedded=true" width="100%" height="800" style="border: 1;"></iframe>
+            {% endif %}
             <!-- Modal 1-->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-xl">
