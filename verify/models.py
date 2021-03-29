@@ -44,6 +44,9 @@ class CheckOut(models.Model):
         null=True,
     )
 
+    def __str__(self):
+        return f'check_{self.id}'
+
     class Meta:
         ordering = ['check_date']
 
@@ -69,7 +72,7 @@ class Remark(models.Model):
     text = models.TextField(
         verbose_name='Текст замечания',
         help_text='Введите текст замечания',
-        max_length=1000,
+        max_length=300,
     )
     author = models.ForeignKey(
         User,
@@ -89,6 +92,9 @@ class Remark(models.Model):
         auto_now_add=True,
         db_index=True,
     )
+
+    def __str__(self):
+        return f'remark_{self.id}'
 
     class Meta:
         ordering = ['check_date']

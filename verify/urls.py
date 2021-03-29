@@ -13,7 +13,7 @@ urlpatterns = [
           name='student_list'),
      path('students/<str:username>/',
           views.student_active_check,
-          name='student_active_check'),     
+          name='student_active_check'),
      path('group/',
           views.group_list,
           name='group_list'),

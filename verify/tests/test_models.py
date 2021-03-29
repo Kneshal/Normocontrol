@@ -49,7 +49,7 @@ class VerifyModelTest(TestCase):
             'info': CheckOut._meta.get_field('info').verbose_name,
             'status': CheckOut._meta.get_field('status').verbose_name,
             'docx_file': CheckOut._meta.get_field('docx_file').verbose_name,
-            'pdf_file': CheckOut._meta.get_field('pdf_file').verbose_name,            
+            'pdf_file': CheckOut._meta.get_field('pdf_file').verbose_name,
         }
         for value, expected in field_verboses.items():
             with self.subTest(value=value):
