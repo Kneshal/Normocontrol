@@ -3,75 +3,102 @@ from django.test import TestCase
 
 from verify.models import CheckOut, Remark
 from verify.tests import constants as cts
+from users.models import Group, CustomUser
 
 User = get_user_model()
 
 
-class PostsModelTest(TestCase):
+class VerifyModelTest(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        user = User.objects.create(username=cts.USERNAME_1)
-        '''
-        user.profile.image = None
         cls.group = Group.objects.create(
-            title=cts.LONG_TEXT,
+            title=cts.GROUP_1_TITLE,
             slug=cts.GROUP_1_SLUG,
-            description=cts.GROUP_1_DESCRIPTION)
-        cls.post = Post.objects.create(
-            text=cts.LONG_TEXT,
-            author=user,
-            group=cls.group
         )
-        cls.comment = Comment.objects.create(
-            post=cls.post,
-            author=user,
-            text=cts.LONG_TEXT
+        cls.student = CustomUser.objects.create(
+            username=cts.USERNAME_1,
+            group=cls.group,
+            allow_manage=False,
         )
-        '''
+        cls.controller = CustomUser.objects.create(
+            username=cts.USERNAME_2,
+            allow_manage=True,
+        )
+        cls.checkout = CheckOut.objects.create(
+            student=cls.student,
+            info=cts.INFO,
+            status=False,
+            docx_file=None,
+            pdf_file=None,
+        )
+        cls.remark = Remark.objects.create(
+            section=cts.REMARK_SECTION,
+            page_number=cts.REMARK_PAGE_NUMBER,
+            paragraph=cts.REMARK_PARAGRAPH,
+            text=cts.REMARK_TEXT,
+            author=cls.controller,
+            check_out=cls.checkout
+        )
 
-    def test_post_object_name_is_title_field(self):
-        """__str__  post - это строчка с содержимым post.title."""
-        pass
-        #expected_object_name = PostsModelTest.post.text[
-        #    :PostsModelTest.post.limit_str]
-        #self.assertEquals(expected_object_name, str(PostsModelTest.post))
-    '''
-    def test_post_object_name_not_exceed(self):
-        """Текст поста обрезается корректно."""
-        expected_max_length = PostsModelTest.post.limit_str
-        length_object_name = len(str(PostsModelTest.post))
-        self.assertEquals(expected_max_length, length_object_name)
-
-    def test_post_verbose_name(self):
-        """verbose_name в полях совпадает с ожидаемым."""
+    def test_checkout_verbose_name(self):
+        """verbose_name в полях модели Checkout совпадает с ожидаемым."""
         field_verboses = {
-            'text': Post._meta.get_field('text').verbose_name,
-            'pub_date': Post._meta.get_field('pub_date').verbose_name,
-            'author': Post._meta.get_field('author').verbose_name,
-            'group': Post._meta.get_field('group').verbose_name,
-            'image': Post._meta.get_field('image').verbose_name
+            'student': CheckOut._meta.get_field('student').verbose_name,
+            'check_date': CheckOut._meta.get_field('check_date').verbose_name,
+            'info': CheckOut._meta.get_field('info').verbose_name,
+            'status': CheckOut._meta.get_field('status').verbose_name,
+            'docx_file': CheckOut._meta.get_field('docx_file').verbose_name,
+            'pdf_file': CheckOut._meta.get_field('pdf_file').verbose_name,            
         }
         for value, expected in field_verboses.items():
             with self.subTest(value=value):
-                self.assertEqual(
-                    PostsModelTest.post._meta.get_field(value).verbose_name,
-                    expected
-                )
+                field = VerifyModelTest.checkout._meta.get_field(value)
+                self.assertEqual(field.verbose_name, expected)
 
-    def test_post_help_text(self):
-        """help_text в полях совпадает с ожидаемым."""
+    def test_checkout_help_text(self):
+        """help_text в полях модели Checkout совпадает с ожидаемым."""
         field_help_texts = {
-            'text': Post._meta.get_field('text').help_text,
-            'pub_date': Post._meta.get_field('pub_date').help_text,
-            'author': Post._meta.get_field('author').help_text,
-            'group': Post._meta.get_field('group').help_text,
-            'image': Post._meta.get_field('image').help_text,
+            'student': CheckOut._meta.get_field('student').help_text,
+            'check_date': CheckOut._meta.get_field('check_date').help_text,
+            'info': CheckOut._meta.get_field('info').help_text,
+            'status': CheckOut._meta.get_field('status').help_text,
+            'docx_file': CheckOut._meta.get_field('docx_file').help_text,
+            'pdf_file': CheckOut._meta.get_field('pdf_file').help_text,
         }
         for value, expected in field_help_texts.items():
             with self.subTest(value=value):
-                self.assertEqual(
-                    PostsModelTest.post._meta.get_field(value).help_text,
-                    expected
-                )
-    '''
+                field = VerifyModelTest.checkout._meta.get_field(value)
+                self.assertEqual(field.help_text, expected)
+
+    def test_remark_verbose_name(self):
+        """verbose_name в полях модели Remark совпадает с ожидаемым."""
+        field_verboses = {
+            'section': Remark._meta.get_field('section').verbose_name,
+            'page_number': Remark._meta.get_field('page_number').verbose_name,
+            'paragraph': Remark._meta.get_field('paragraph').verbose_name,
+            'text': Remark._meta.get_field('text').verbose_name,
+            'author': Remark._meta.get_field('author').verbose_name,
+            'check_out': Remark._meta.get_field('check_out').verbose_name,
+            'check_date': Remark._meta.get_field('check_date').verbose_name,
+        }
+        for value, expected in field_verboses.items():
+            with self.subTest(value=value):
+                field = VerifyModelTest.remark._meta.get_field(value)
+                self.assertEqual(field.verbose_name, expected)
+
+    def test_remark_help_text(self):
+        """help_text в полях модели Remark совпадает с ожидаемым."""
+        field_help_texts = {
+            'section': Remark._meta.get_field('section').help_text,
+            'page_number': Remark._meta.get_field('page_number').help_text,
+            'paragraph': Remark._meta.get_field('paragraph').help_text,
+            'text': Remark._meta.get_field('text').help_text,
+            'author': Remark._meta.get_field('author').help_text,
+            'check_out': Remark._meta.get_field('check_out').help_text,
+            'check_date': Remark._meta.get_field('check_date').help_text,
+        }
+        for value, expected in field_help_texts.items():
+            with self.subTest(value=value):
+                field = VerifyModelTest.remark._meta.get_field(value)
+                self.assertEqual(field.help_text, expected)

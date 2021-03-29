@@ -35,6 +35,7 @@ class CheckOut(models.Model):
         verbose_name='Дипломная работа (расширение docx)',
         help_text='Укажите файл с расширением docx',
         upload_to='diplomas/%Y/%m/%d/',
+        null=True,
     )
     pdf_file = models.FileField(
         verbose_name='Дипломная работа (расширение pdf)',
@@ -70,11 +71,13 @@ class Remark(models.Model):
         help_text='Введите текст замечания',
         max_length=1000,
     )
-    author = models.ForeignKey(User,
-                               verbose_name='Автор замечания',
-                               help_text='Укажите автора замечания',
-                               on_delete=models.CASCADE,
-                               related_name='remark')
+    author = models.ForeignKey(
+        User,
+        verbose_name='Автор замечания',
+        help_text='Укажите автора замечания',
+        on_delete=models.CASCADE,
+        related_name='remark'
+    )
     check_out = models.ForeignKey(
         CheckOut,
         on_delete=models.CASCADE,

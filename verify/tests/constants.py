@@ -1,36 +1,20 @@
 LONG_TEXT = 'G' * 200
 
+INFO = 'Сопроводительная информация'
+REMARK_SECTION = 'Титульный лист'
+REMARK_PAGE_NUMBER = 1
+REMARK_PARAGRAPH = 2
+REMARK_TEXT = 'Текст замечания'
+
 USERNAME_1 = 'test-user-1'
 USERNAME_2 = 'test-user-2'
-USERNAME_3 = 'test-user-3'
 
 GROUP_1_SLUG = 'test-slug-1'
 GROUP_2_SLUG = 'test-slug-2'
-GROUP_3_SLUG = 'test-slug-3'
 
 GROUP_1_TITLE = 'test-group-title-1'
 GROUP_2_TITLE = 'test-group-title-2'
-GROUP_3_TITLE = 'test-group-title-3'
 
-GROUP_1_DESCRIPTION = 'test-description-1'
-GROUP_2_DESCRIPTION = 'test-description-2'
-GROUP_3_DESCRIPTION = 'test-description-3'
-
-POST_1_TITLE = 'test-post-title-1'
-POST_2_TITLE = 'test-post-title-2'
-POST_3_TITLE = 'test-post-title-3'
-
-POST_1_TEXT = 'test-post-1'
-POST_2_TEXT = 'test-post-2'
-POST_3_TEXT = 'test-post-3'
-
-COMMENT_1_TEXT = 'comment-text-1'
-COMMENT_2_TEXT = 'comment-text-2'
-COMMENT_3_TEXT = 'comment-text-3'
-
-FORM_TEXT_ERROR = 'Обязательное поле.'
-FORM_IMAGE_ERROR = ('Загрузите правильное изображение. Файл, который вы '
-                    'загрузили, поврежден или не является изображением.')
 
 SMALL_GIF_NAME = 'small.gif'
 SMALL_GIF_TYPE = 'image/gif'
