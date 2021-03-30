@@ -27,7 +27,6 @@ class CustomUserAdmin(UserAdmin):
         'allow_manage',
         'username',
         'email',
-        'birth_date',
     )
     empty_value_display = "-пусто-"
 

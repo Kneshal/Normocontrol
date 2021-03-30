@@ -30,20 +30,6 @@ class CustomUser(AbstractUser):
         related_name='user',
         null=True,
     )
-    birth_date = models.DateField(
-        verbose_name='Дата рождения',
-        help_text='Укажите дату рождения',
-        default=dt.date.today,
-        null=True,
-    )
-    image = models.ImageField(
-        verbose_name='Изображение',
-        help_text='Загрузите аватар для профиля',
-        upload_to='users/',
-        default='users/default.jpg',
-        null=True,
-        blank=True
-    )
     allow_manage = models.BooleanField(
         default=False,
         verbose_name='Доступ к управлению',

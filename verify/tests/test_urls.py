@@ -235,7 +235,7 @@ class VerifyURLTests(TestCase):
                 self.assertEqual(response.status_code, 302)
 
     def test_url_not_available_to_wrong_student_user(self):
-        """Страницы не доступны пользователю-студенту."""
+        """Страницы одного студента не доступны другому студенту."""
         urls = [
             VerifyURLTests.urls_user_check['check_list'],
             VerifyURLTests.urls_user_check['archive'],
@@ -249,7 +249,7 @@ class VerifyURLTests(TestCase):
                 self.assertEqual(response.status_code, 403)
 
     def test_url_available_to_correct_student_user(self):
-        """Страницы не доступны пользователю-студенту."""
+        """Страницы доступны пользователю-студенту."""
         urls_200 = [
             VerifyURLTests.urls_user_check['check_list'],
             VerifyURLTests.urls_user_check['archive'],
@@ -269,7 +269,7 @@ class VerifyURLTests(TestCase):
                 self.assertEqual(response.status_code, 302, f'{url}')
 
     def test_url_new_check_redirect(self):
-        """Проверка редиректа после подписки на пользователя."""
+        """Проверка редиректа после создания новой заявки."""
         response = self.authorized_client_1.get(
             VerifyURLTests.urls_user_check['new_check'],
             follow=True
@@ -278,30 +278,37 @@ class VerifyURLTests(TestCase):
         self.assertRedirects(response, expected)
 
     def test_url_check_delete_redirect(self):
-        """Проверка редиректа после подписки на пользователя."""
+        """Проверка редиректа после удаления заявки на проверку."""
         response = self.authorized_client_1.get(
-            VerifyURLTests.urls_user_check['new_check'],
+            VerifyURLTests.urls_user_check['check_delete'],
             follow=True
         )
         expected = VerifyURLTests.urls_user_check['check_list']
         self.assertRedirects(response, expected)
 
-    '''
-
-            VerifyURLTests.urls_user_check['check_delete'],
-            VerifyURLTests.urls_need_access['add_remark'],
-            VerifyURLTests.urls_need_access['delete_remark'],
+    def test_url_check_archive_redirect(self):
+        """Проверка редиректа после архивации заявки на проверку."""
+        response = self.authorized_client_3.get(
             VerifyURLTests.urls_need_access['check_archive'],
-            VerifyURLTests.urls_need_access['check_active'],
-
-    def test_url_profile_follow_redirect(self):
-        """Проверка редиректа после подписки на пользователя."""
-        response = self.authorized_client_2.get(
-            PostsURLTests.urls['profile_follow'],
             follow=True
         )
-        expected = PostsURLTests.urls['profile']
+        expected = f'/user/{self.controller}/check_list/'
         self.assertRedirects(response, expected)
 
+    def test_url_add_remark_redirect(self):
+        """Проверка редиректа после активации заявки на проверку."""
+        response = self.authorized_client_3.get(
+            VerifyURLTests.urls_need_access['add_remark'],
+            follow=True
+        )
+        expected = f'/user/{self.controller}/{self.checkout.id}/check_view/'
+        self.assertRedirects(response, expected)
 
-    '''
+    def test_url_delete_remark_redirect(self):
+        """Проверка редиректа после активации заявки на проверку."""
+        response = self.authorized_client_3.get(
+            VerifyURLTests.urls_need_access['delete_remark'],
+            follow=True
+        )
+        expected = f'/user/{self.controller}/{self.checkout.id}/check_view/'
+        self.assertRedirects(response, expected)

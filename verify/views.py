@@ -108,6 +108,7 @@ def check_list(request, username):
 @login_required
 @user_access
 def student_active_check(request, username):
+    """Выводит активную заявку определенного студента."""
     student_check = CheckOut.objects.all().filter(status=False)
     student_check = student_check.filter(student__username=username).first()
     context = {'student_check': student_check}
@@ -117,7 +118,7 @@ def student_active_check(request, username):
 @login_required
 @user_check
 def archive(request, username):
-    """Выводит список архивных заявок для зпрошенного пользователя."""
+    """Выводит список архивных заявок для запрошенного пользователя."""
     user = get_object_or_404(User, username=username)
     check_list = CheckOut.objects.all().filter(status=True)
     if not user.allow_manage:
@@ -133,6 +134,7 @@ def archive(request, username):
 @user_check
 def check_view(request, username, check_id):
     """Выводит данные по конкретной заявке для запрошенного пользователя."""
+    # Формы под вопросом
     check_item = get_object_or_404(CheckOut, id=check_id)
     form_1 = RemarkNavForm(request.POST or None)
     form_2 = RemarkStandartErrorForm(request.POST or None)
