@@ -41,6 +41,11 @@ class VerifyModelTest(TestCase):
             check_out=cls.checkout
         )
 
+    def test_checkout_object_name(self):
+        """Имя объекта через __str__ является строкой вида check__id."""
+        expected_object_name = f'check_{VerifyModelTest.checkout.id}'
+        self.assertEquals(expected_object_name, str(VerifyModelTest.checkout))
+
     def test_checkout_verbose_name(self):
         """verbose_name в полях модели Checkout совпадает с ожидаемым."""
         field_verboses = {
@@ -70,6 +75,11 @@ class VerifyModelTest(TestCase):
             with self.subTest(value=value):
                 field = VerifyModelTest.checkout._meta.get_field(value)
                 self.assertEqual(field.help_text, expected)
+
+    def test_remark_object_name(self):
+        """Имя объекта через __str__ является строкой вида remark__id."""
+        expected_object_name = f'remark_{VerifyModelTest.remark.id}'
+        self.assertEquals(expected_object_name, str(VerifyModelTest.remark))
 
     def test_remark_verbose_name(self):
         """verbose_name в полях модели Remark совпадает с ожидаемым."""

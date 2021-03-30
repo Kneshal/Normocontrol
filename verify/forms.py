@@ -70,7 +70,7 @@ class CheckForm(forms.ModelForm):
         data = self.cleaned_data['docx_file']
         file_type = data.name.split('.')[1]
         if file_type != 'docx':
-            raise forms.ValidationError("Файл должен иметь расширение '.docx'",
+            raise forms.ValidationError(self.error_messages["Файл должен иметь расширение '.docx'"],
                                         code='invalid extension')
         return data
 

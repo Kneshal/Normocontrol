@@ -1,7 +1,7 @@
 INFO = 'Сопроводительная информация'
 LONG_INFO = 'G' * 1100
 
-REMARK_SECTION = 'Титульный лист'
+REMARK_SECTION = 'title'
 REMARK_PAGE_NUMBER = 1
 REMARK_PARAGRAPH = 2
 REMARK_TEXT = 'Текст замечания'

@@ -1,16 +1,19 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-import datetime as dt
 from pytils.translit import slugify
 
 
 class Group(models.Model):
-    title = models.CharField(verbose_name='Название группы',
-                             help_text='Введите название группы',
-                             max_length=200)
-    slug = models.SlugField(verbose_name='Slug-метка',
-                            help_text='Укажите адрес для страницы группы',
-                            unique=True)
+    title = models.CharField(
+        verbose_name='Название группы',
+        help_text='Введите название группы',
+        max_length=200
+    )
+    slug = models.SlugField(
+        verbose_name='Slug-метка',
+        help_text='Укажите адрес для страницы группы',
+        unique=True
+    )
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -22,6 +25,7 @@ class Group(models.Model):
 
 
 class CustomUser(AbstractUser):
+    email = models.EmailField(unique=True)
     group = models.ForeignKey(
         Group,
         verbose_name='Группа',
@@ -36,3 +40,14 @@ class CustomUser(AbstractUser):
         help_text='Открывает пользователю функционал проверки работ',
         null=True,
     )
+    REQUIRED_FIELDS = ['username']
+    USERNAME_FIELD = 'email'
+
+    def __str__(self):
+        return self.username
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if not self.username:
+            self.username = f'{slugify(self.first_name)}-{slugify(self.last_name)}-{self.id}'
+        super().save(*args, **kwargs)

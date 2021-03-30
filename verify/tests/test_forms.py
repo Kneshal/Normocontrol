@@ -27,6 +27,7 @@ class VerifyViewsTests(TestCase):
             slug=cts.GROUP_1_SLUG,
         )
         cls.student_1 = User.objects.create(
+            #email=
             username=cts.USERNAME_1,
             group=cls.group,
             allow_manage=False,
@@ -257,3 +258,57 @@ class VerifyViewsTests(TestCase):
         )
         self.assertEqual(group_count, Group.objects.count())
         self.assertIsNotNone(response.context.get('form'))
+
+    def test_new_remark_valid_form(self):
+        """Валидная форма создает замечания и производит редирект."""
+        remark_count = Remark.objects.count()
+        form_data = {
+            'section': cts.REMARK_SECTION,
+            'page_number': cts.REMARK_PAGE_NUMBER,
+            'paragraph': cts.REMARK_PARAGRAPH,
+            'custom_error': cts.REMARK_TEXT,
+            'err_1': True,
+        }
+        response = self.controller_client.post(
+            VerifyViewsTests.urls_need_access['add_remark'],
+            data=form_data,
+            follow=True
+        )
+        self.assertEqual(remark_count + 2, Remark.objects.count())
+        self.assertRedirects(
+            response,
+            reverse(
+                'verify:check_view',
+                kwargs={
+                    'username': VerifyViewsTests.controller,
+                    'check_id': VerifyViewsTests.checkout.id
+                }
+            )
+        )
+
+    def test_new_remark_not_valid_form(self):
+        """Валидная форма создает замечания и производит редирект."""
+        remark_count = Remark.objects.count()
+        form_data = {
+            'section': '',
+            'page_number': '',
+            'paragraph': '',
+            'custom_error': '',
+            'err_1': '',
+        }
+        response = self.controller_client.post(
+            VerifyViewsTests.urls_need_access['add_remark'],
+            data=form_data,
+            follow=True
+        )
+        self.assertEqual(remark_count, Remark.objects.count())
+        self.assertRedirects(
+            response,
+            reverse(
+                'verify:check_view',
+                kwargs={
+                    'username': VerifyViewsTests.controller,
+                    'check_id': VerifyViewsTests.checkout.id
+                }
+            )
+        )
