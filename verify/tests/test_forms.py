@@ -17,7 +17,7 @@ User = get_user_model()
 
 
 @override_settings(MEDIA_ROOT=MEDIA_ROOT)
-class VerifyViewsTests(TestCase):
+class VerifyFromTests(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -27,17 +27,19 @@ class VerifyViewsTests(TestCase):
             slug=cts.GROUP_1_SLUG,
         )
         cls.student_1 = User.objects.create(
-            #email=
+            email=cts.EMAIL_1,
             username=cts.USERNAME_1,
             group=cls.group,
             allow_manage=False,
         )
         cls.student_2 = User.objects.create(
+            email=cts.EMAIL_2,
             username=cts.USERNAME_2,
             group=cls.group,
             allow_manage=False,
         )
         cls.controller = User.objects.create(
+            email=cts.EMAIL_3,
             username=cts.USERNAME_3,
             allow_manage=True,
         )
@@ -154,11 +156,11 @@ class VerifyViewsTests(TestCase):
     def setUp(self):
         self.guest_client = Client()
         self.student_client_1 = Client()
-        self.student_client_1.force_login(VerifyViewsTests.student_1)
+        self.student_client_1.force_login(VerifyFromTests.student_1)
         self.student_client_2 = Client()
-        self.student_client_2.force_login(VerifyViewsTests.student_2)
+        self.student_client_2.force_login(VerifyFromTests.student_2)
         self.controller_client = Client()
-        self.controller_client.force_login(VerifyViewsTests.controller)
+        self.controller_client.force_login(VerifyFromTests.controller)
         cache.clear()
 
     def test_new_check_valid_form(self):
@@ -181,7 +183,7 @@ class VerifyViewsTests(TestCase):
             'info': cts.INFO,
         }
         response = self.student_client_1.post(
-            VerifyViewsTests.urls_user_check['new_check'],
+            VerifyFromTests.urls_user_check['new_check'],
             data=form_data,
             follow=True
         )
@@ -191,7 +193,7 @@ class VerifyViewsTests(TestCase):
             reverse(
                 'verify:check_list',
                 kwargs={
-                    'username': VerifyViewsTests.student_1
+                    'username': VerifyFromTests.student_1
                 }
             ),
         )
@@ -216,7 +218,7 @@ class VerifyViewsTests(TestCase):
             'info': '',
         }
         response = self.student_client_1.post(
-            VerifyViewsTests.urls_user_check['new_check'],
+            VerifyFromTests.urls_user_check['new_check'],
             data=form_data,
             follow=True
         )
@@ -230,7 +232,7 @@ class VerifyViewsTests(TestCase):
             'title': cts.GROUP_1_TITLE,
         }
         response = self.controller_client.post(
-            VerifyViewsTests.urls_need_access['new_group'],
+            VerifyFromTests.urls_need_access['new_group'],
             data=form_data,
             follow=True
         )
@@ -240,7 +242,7 @@ class VerifyViewsTests(TestCase):
             reverse(
                 'verify:check_list',
                 kwargs={
-                    'username': VerifyViewsTests.controller
+                    'username': VerifyFromTests.controller
                 }
             ),
         )
@@ -252,7 +254,7 @@ class VerifyViewsTests(TestCase):
             'title': '',
         }
         response = self.controller_client.post(
-            VerifyViewsTests.urls_need_access['new_group'],
+            VerifyFromTests.urls_need_access['new_group'],
             data=form_data,
             follow=True
         )
@@ -270,7 +272,7 @@ class VerifyViewsTests(TestCase):
             'err_1': True,
         }
         response = self.controller_client.post(
-            VerifyViewsTests.urls_need_access['add_remark'],
+            VerifyFromTests.urls_need_access['add_remark'],
             data=form_data,
             follow=True
         )
@@ -280,8 +282,8 @@ class VerifyViewsTests(TestCase):
             reverse(
                 'verify:check_view',
                 kwargs={
-                    'username': VerifyViewsTests.controller,
-                    'check_id': VerifyViewsTests.checkout.id
+                    'username': VerifyFromTests.controller,
+                    'check_id': VerifyFromTests.checkout.id
                 }
             )
         )
@@ -297,7 +299,7 @@ class VerifyViewsTests(TestCase):
             'err_1': '',
         }
         response = self.controller_client.post(
-            VerifyViewsTests.urls_need_access['add_remark'],
+            VerifyFromTests.urls_need_access['add_remark'],
             data=form_data,
             follow=True
         )
@@ -307,8 +309,8 @@ class VerifyViewsTests(TestCase):
             reverse(
                 'verify:check_view',
                 kwargs={
-                    'username': VerifyViewsTests.controller,
-                    'check_id': VerifyViewsTests.checkout.id
+                    'username': VerifyFromTests.controller,
+                    'check_id': VerifyFromTests.checkout.id
                 }
             )
         )

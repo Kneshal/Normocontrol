@@ -11,7 +11,7 @@ class RemarkNavForm(forms.Form):
         ('title', 'Титульный лист'),
         ('task', 'Индивидуальное задание на ВКР'),
         ('abstract', 'Реферат'),
-        ('contents', 'Оглавление'),
+        ('contents', 'Содержание'),
         ('introduction', 'Введение'),
         ('body', 'Основная часть'),
         ('conclusion', 'Заключение'),
@@ -68,15 +68,16 @@ class CheckForm(forms.ModelForm):
 
     def clean_docx_file(self):
         data = self.cleaned_data['docx_file']
-        file_type = data.name.split('.')[1]
+        file_type = data.name.split('.')[-1]
         if file_type != 'docx':
-            raise forms.ValidationError(self.error_messages["Файл должен иметь расширение '.docx'"],
-                                        code='invalid extension')
+            raise forms.ValidationError(
+                'Файл должен иметь расширение .docx',
+            )
         return data
 
     def clean_pdf_file(self):
         data = self.cleaned_data['pdf_file']
-        file_type = data.name.split('.')[1]
+        file_type = data.name.split('.')[-1]
         if file_type != 'pdf':
             raise forms.ValidationError("Файл должен иметь расширение '.pdf'",
                                         code='invalid extension')

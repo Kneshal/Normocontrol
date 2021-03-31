@@ -19,7 +19,7 @@ class CheckOut(models.Model):
         db_index=True,
     )
     info = models.TextField(
-        verbose_name='Сопровотельная информация',
+        verbose_name='Сопроводительная информация',
         help_text='При необходимости укажите дополнительные сведения',
         max_length=1000,
         null=True,

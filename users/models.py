@@ -25,7 +25,11 @@ class Group(models.Model):
 
 
 class CustomUser(AbstractUser):
-    email = models.EmailField(unique=True)
+    email = models.EmailField(
+        verbose_name='Электронная почта',
+        help_text='Укажите электронную почту',
+        null=True,
+    )
     group = models.ForeignKey(
         Group,
         verbose_name='Группа',
@@ -40,14 +44,6 @@ class CustomUser(AbstractUser):
         help_text='Открывает пользователю функционал проверки работ',
         null=True,
     )
-    REQUIRED_FIELDS = ['username']
-    USERNAME_FIELD = 'email'
 
     def __str__(self):
         return self.username
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        if not self.username:
-            self.username = f'{slugify(self.first_name)}-{slugify(self.last_name)}-{self.id}'
-        super().save(*args, **kwargs)

@@ -10,6 +10,10 @@ USERNAME_1 = 'test-user-1'
 USERNAME_2 = 'test-user-2'
 USERNAME_3 = 'test-user-3'
 
+EMAIL_1 = 'test1@email.ru'
+EMAIL_2 = 'test1@email.ru'
+EMAIL_3 = 'test1@email.ru'
+
 GROUP_1_SLUG = 'test-slug-1'
 GROUP_2_SLUG = 'test-slug-2'
 
