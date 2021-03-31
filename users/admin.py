@@ -12,6 +12,8 @@ class CustomUserAdmin(UserAdmin):
             None, {
                 'fields': (
                     'username',
+                    'first_name',
+                    'last_name',
                     'password1',
                     'password2',
                     'allow_manage'

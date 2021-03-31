@@ -15,6 +15,10 @@
             {% endif %}
             <br>
             Описание: {{ item.text }}<br>
+
+            {% if item.check_all %}
+                <span class="text-danger"><b>Проверить по всей работе</b><br></span>
+            {% endif %}
             <small class="text-muted">{{ item.check_date }}</small><br>
             
             {% if user.allow_manage %}

@@ -1,6 +1,5 @@
 from django import forms
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
-import django.contrib.auth.password_validation as password_validation
 
 from .models import CustomUser
 

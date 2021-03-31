@@ -57,15 +57,24 @@ class Remark(models.Model):
         help_text='Укажите раздел ПЗ',
         max_length=100,
     )
-    page_number = models.PositiveSmallIntegerField(
+    page_number = models.CharField(
         verbose_name='Номер страницы',
         help_text='Укажите номер страницы',
         null=True,
         blank=True,
+        max_length=100,
     )
-    paragraph = models.PositiveSmallIntegerField(
+    paragraph = models.CharField(
         verbose_name='Номер абзаца',
         help_text='Укажите номер абзаца',
+        null=True,
+        blank=True,
+        max_length=100,
+    )
+    check_all = models.CharField(
+        verbose_name='Сопроводительная информация',
+        help_text='При необходимости укажите дополнительные сведения',
+        max_length=100,
         null=True,
         blank=True,
     )

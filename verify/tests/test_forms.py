@@ -269,7 +269,7 @@ class VerifyFromTests(TestCase):
             'page_number': cts.REMARK_PAGE_NUMBER,
             'paragraph': cts.REMARK_PARAGRAPH,
             'custom_error': cts.REMARK_TEXT,
-            'err_1': True,
+            'err_main_1': True,
         }
         response = self.controller_client.post(
             VerifyFromTests.urls_need_access['add_remark'],
