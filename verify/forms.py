@@ -38,9 +38,10 @@ class RemarkNavForm(forms.Form):
 
 
 class RemarkEditForm(forms.ModelForm):
+    """Форма редактирования замечания."""
     class Meta:
         model = Remark
-        fields = ('text',)
+        fields = ('section', 'page_number', 'paragraph', 'text',)
 
 
 class RemarkStandartErrorForm(forms.Form):

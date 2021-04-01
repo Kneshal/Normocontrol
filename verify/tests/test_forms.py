@@ -17,7 +17,7 @@ User = get_user_model()
 
 
 @override_settings(MEDIA_ROOT=MEDIA_ROOT)
-class VerifyFromTests(TestCase):
+class VerifyFormTests(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -98,6 +98,14 @@ class VerifyFromTests(TestCase):
                     'remark_id': cls.remark.id
                 }
             ),
+            'edit_remark': reverse(
+                'verify:edit_remark',
+                kwargs={
+                    'username': cls.controller,
+                    'check_id': cls.checkout.id,
+                    'remark_id': cls.remark.id
+                }
+            ),
             'check_archive': reverse(
                 'verify:check_archive',
                 kwargs={
@@ -156,11 +164,11 @@ class VerifyFromTests(TestCase):
     def setUp(self):
         self.guest_client = Client()
         self.student_client_1 = Client()
-        self.student_client_1.force_login(VerifyFromTests.student_1)
+        self.student_client_1.force_login(VerifyFormTests.student_1)
         self.student_client_2 = Client()
-        self.student_client_2.force_login(VerifyFromTests.student_2)
+        self.student_client_2.force_login(VerifyFormTests.student_2)
         self.controller_client = Client()
-        self.controller_client.force_login(VerifyFromTests.controller)
+        self.controller_client.force_login(VerifyFormTests.controller)
         cache.clear()
 
     def test_new_check_valid_form(self):
@@ -183,7 +191,7 @@ class VerifyFromTests(TestCase):
             'info': cts.INFO,
         }
         response = self.student_client_1.post(
-            VerifyFromTests.urls_user_check['new_check'],
+            VerifyFormTests.urls_user_check['new_check'],
             data=form_data,
             follow=True
         )
@@ -193,7 +201,7 @@ class VerifyFromTests(TestCase):
             reverse(
                 'verify:check_list',
                 kwargs={
-                    'username': VerifyFromTests.student_1
+                    'username': VerifyFormTests.student_1
                 }
             ),
         )
@@ -218,7 +226,7 @@ class VerifyFromTests(TestCase):
             'info': '',
         }
         response = self.student_client_1.post(
-            VerifyFromTests.urls_user_check['new_check'],
+            VerifyFormTests.urls_user_check['new_check'],
             data=form_data,
             follow=True
         )
@@ -232,7 +240,7 @@ class VerifyFromTests(TestCase):
             'title': cts.GROUP_1_TITLE,
         }
         response = self.controller_client.post(
-            VerifyFromTests.urls_need_access['new_group'],
+            VerifyFormTests.urls_need_access['new_group'],
             data=form_data,
             follow=True
         )
@@ -242,7 +250,7 @@ class VerifyFromTests(TestCase):
             reverse(
                 'verify:check_list',
                 kwargs={
-                    'username': VerifyFromTests.controller
+                    'username': VerifyFormTests.controller
                 }
             ),
         )
@@ -254,36 +262,114 @@ class VerifyFromTests(TestCase):
             'title': '',
         }
         response = self.controller_client.post(
-            VerifyFromTests.urls_need_access['new_group'],
+            VerifyFormTests.urls_need_access['new_group'],
             data=form_data,
             follow=True
         )
         self.assertEqual(group_count, Group.objects.count())
         self.assertIsNotNone(response.context.get('form'))
 
-    def test_new_remark_valid_form(self):
-        """Валидная форма создает замечания и производит редирект."""
+    def test_edit_remark_valid_form(self):
+        """Валидная форма редактирует замечание и производит редирект."""
         remark_count = Remark.objects.count()
         form_data = {
-            'section': cts.REMARK_SECTION,
-            'page_number': cts.REMARK_PAGE_NUMBER,
-            'paragraph': cts.REMARK_PARAGRAPH,
-            'custom_error': cts.REMARK_TEXT,
-            'err_main_1': True,
+            'section': cts.REMARK_SECTION_2,
+            'page_number': cts.REMARK_PAGE_NUMBER_2,
+            'paragraph': cts.REMARK_PARAGRAPH_2,
+            'text': cts.REMARK_TEXT_2,
         }
         response = self.controller_client.post(
-            VerifyFromTests.urls_need_access['add_remark'],
+            VerifyFormTests.urls_need_access['edit_remark'],
             data=form_data,
             follow=True
         )
-        self.assertEqual(remark_count + 2, Remark.objects.count())
+        VerifyFormTests.remark.refresh_from_db()
+        self.assertEqual(remark_count, Remark.objects.count())
+        self.assertEqual(
+            VerifyFormTests.remark.section,
+            cts.REMARK_SECTION_2
+        )
+        self.assertEqual(
+            VerifyFormTests.remark.page_number,
+            cts.REMARK_PAGE_NUMBER_2
+        )
+        self.assertEqual(
+            VerifyFormTests.remark.paragraph,
+            cts.REMARK_PARAGRAPH_2
+        )
+        self.assertEqual(
+            VerifyFormTests.remark.text,
+            cts.REMARK_TEXT_2
+        )
         self.assertRedirects(
             response,
             reverse(
                 'verify:check_view',
                 kwargs={
-                    'username': VerifyFromTests.controller,
-                    'check_id': VerifyFromTests.checkout.id
+                    'username': VerifyFormTests.controller,
+                    'check_id': VerifyFormTests.checkout.id
+                }
+            )
+        )
+
+    def test_edit_remark_not_valid_form(self):
+        """Форма редактирования замечания не прошла валидацию."""
+        form_data = {
+            'section': '',
+            'page_number': '',
+            'paragraph': '',
+            'text': '',
+        }
+        response = self.controller_client.post(
+            VerifyFormTests.urls_need_access['edit_remark'],
+            data=form_data,
+        )
+        VerifyFormTests.remark.refresh_from_db()
+        self.assertFormError(response, 'form', 'section', cts.FORM_TEXT_ERROR)
+        self.assertIsNotNone(response.context.get('form'))
+        self.assertEqual(
+            VerifyFormTests.remark.section,
+            cts.REMARK_SECTION
+        )
+        self.assertEqual(
+            VerifyFormTests.remark.page_number,
+            cts.REMARK_PAGE_NUMBER
+        )
+        self.assertEqual(
+            VerifyFormTests.remark.paragraph,
+            cts.REMARK_PARAGRAPH
+        )
+        self.assertEqual(
+            VerifyFormTests.remark.text,
+            cts.REMARK_TEXT
+        )
+
+    def test_new_remark_valid_form(self):
+        """Валидная форма создает замечание и производит редирект."""
+        remark_count = Remark.objects.count()
+        form_data = {
+            'section': cts.REMARK_SECTION,
+            'page_number': cts.REMARK_PAGE_NUMBER,
+            'paragraph': cts.REMARK_PARAGRAPH,
+            'check_all': True,
+            'custom_error': cts.REMARK_TEXT,
+            'err_main_1': True,
+        }
+        response = self.controller_client.post(
+            VerifyFormTests.urls_need_access['add_remark'],
+            data=form_data,
+            follow=True
+        )
+        self.assertEqual(remark_count + 2, Remark.objects.count())
+        last_remark = Remark.objects.all().last()
+        self.assertEqual(last_remark.check_all[2:-3], cts.REMARK_CHECK_ALL)
+        self.assertRedirects(
+            response,
+            reverse(
+                'verify:check_view',
+                kwargs={
+                    'username': VerifyFormTests.controller,
+                    'check_id': VerifyFormTests.checkout.id
                 }
             )
         )
@@ -299,7 +385,7 @@ class VerifyFromTests(TestCase):
             'err_1': '',
         }
         response = self.controller_client.post(
-            VerifyFromTests.urls_need_access['add_remark'],
+            VerifyFormTests.urls_need_access['add_remark'],
             data=form_data,
             follow=True
         )
@@ -309,8 +395,8 @@ class VerifyFromTests(TestCase):
             reverse(
                 'verify:check_view',
                 kwargs={
-                    'username': VerifyFromTests.controller,
-                    'check_id': VerifyFromTests.checkout.id
+                    'username': VerifyFormTests.controller,
+                    'check_id': VerifyFormTests.checkout.id
                 }
             )
         )

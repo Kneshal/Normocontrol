@@ -1,10 +1,19 @@
 INFO = 'Сопроводительная информация'
 LONG_INFO = 'G' * 1100
 
+FORM_TEXT_ERROR = 'Обязательное поле.'
+
 REMARK_SECTION = 'title'
-REMARK_PAGE_NUMBER = 1
-REMARK_PARAGRAPH = 2
+REMARK_PAGE_NUMBER = 'number'
+REMARK_PARAGRAPH = 'paragraph'
 REMARK_TEXT = 'Текст замечания'
+
+REMARK_SECTION_2 = 'title-mod'
+REMARK_PAGE_NUMBER_2 = 'number-mod'
+REMARK_PARAGRAPH_2 = 'paragraph-mod'
+REMARK_TEXT_2 = 'Текст замечания'
+
+REMARK_CHECK_ALL = 'Проверить по всей работе'
 
 USERNAME_1 = 'test-user-1'
 USERNAME_2 = 'test-user-2'

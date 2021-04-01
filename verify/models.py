@@ -52,7 +52,7 @@ class CheckOut(models.Model):
 
 
 class Remark(models.Model):
-    section = models.TextField(
+    section = models.CharField(
         verbose_name='Раздел ПЗ страницы',
         help_text='Укажите раздел ПЗ',
         max_length=100,
@@ -72,8 +72,8 @@ class Remark(models.Model):
         max_length=100,
     )
     check_all = models.CharField(
-        verbose_name='Сопроводительная информация',
-        help_text='При необходимости укажите дополнительные сведения',
+        verbose_name='Проверить замечания по всему документу',
+        help_text='Уточните необходимость проверки по всему документу',
         max_length=100,
         null=True,
         blank=True,

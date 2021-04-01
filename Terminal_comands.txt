@@ -17,7 +17,7 @@ Ctrl + C # Закрыть сервер
 
 [Тестирование]
 python manage.py test # Запуск всех тестов. Опционально аргумент -v 2 или -v 3
-coverage run --source='posts,users,about' manage.py test -v 2 # Оценка покрытия тестами
+coverage run --source='verify,users' manage.py test -v 2 # Оценка покрытия тестами
 coverage report # Проверка отчета покрытия тестами
 python manage.py test verify # Запустит только тесты в приложении posts
 python manage.py test verify.tests.test_urls # Запустит только тесты из файла test_urls.py в приложении posts

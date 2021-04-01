@@ -4,7 +4,8 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
-from .forms import CheckForm, GroupForm, RemarkStandartErrorForm, RemarkNavForm, RemarkEditForm
+from .forms import (CheckForm, GroupForm, RemarkStandartErrorForm,
+                    RemarkNavForm, RemarkEditForm)
 from .models import CheckOut, Remark
 from users.models import Group
 
@@ -257,22 +258,10 @@ def edit_remark(request, username, check_id, remark_id):
     """Редактирует замечание."""
     remark = get_object_or_404(Remark, id=remark_id)
     form = RemarkEditForm(request.POST or None, instance=remark)
-    '''
     if not form.is_valid():
-        check_item = get_object_or_404(CheckOut, id=check_id)
-        form_1 = RemarkNavForm(request.POST or None)
-        form_2 = RemarkStandartErrorForm(request.POST or None)
-        remarks = check_item.remark.all()
-        context = {
-            'username': username,
-            'check_item': check_item,
-            'remarks': remarks,
-            'form_1': form_1,
-            'form_2': form_2,
-        }
-        return render(request, 'verify/check_view.html', context)
+        context = {'form': form}
+        return render(request, 'verify/edit_remark.html', context)
     remark.save()
-    '''
     return redirect('verify:check_view', username, check_id)
 
 
