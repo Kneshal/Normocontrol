@@ -33,13 +33,13 @@ class CheckOut(models.Model):
     )
     docx_file = models.FileField(
         verbose_name='Дипломная работа (расширение docx)',
-        help_text='Укажите файл с расширением docx',
+        help_text='Укажите файл с расширением docx, размером не более 8 Мб',
         upload_to='diplomas/%Y/%m/%d/',
         null=True,
     )
     pdf_file = models.FileField(
         verbose_name='Дипломная работа (расширение pdf)',
-        help_text='Укажите файл с расширением pdf',
+        help_text='Укажите файл с расширением pdf, размером не более 8 Мб',
         upload_to='diplomas/%Y/%m/%d/',
         null=True,
     )

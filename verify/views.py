@@ -156,6 +156,8 @@ def check_archive(request, username, check_id):
     """Отправляет определенную заявку в архив."""
     check_item = get_object_or_404(CheckOut, id=check_id)
     check_item.status = True
+    check_item.pdf_file.delete()
+    check_item.docx_file.delete()
     check_item.save()
     return redirect('verify:check_list', username)
 

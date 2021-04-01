@@ -103,14 +103,22 @@ class CheckForm(forms.ModelForm):
             raise forms.ValidationError(
                 'Файл должен иметь расширение .docx',
             )
+        if data.size > 8000000:
+            raise forms.ValidationError(
+                'Файл должен иметь размер не более 8 Мб',
+            )
         return data
 
     def clean_pdf_file(self):
         data = self.cleaned_data['pdf_file']
         file_type = data.name.split('.')[-1]
         if file_type != 'pdf':
-            raise forms.ValidationError("Файл должен иметь расширение '.pdf'",
+            raise forms.ValidationError("Файл должен иметь расширение .pdf",
                                         code='invalid extension')
+        if data.size > 8000000:
+            raise forms.ValidationError(
+                'Файл должен иметь размер не более 8 Мб',
+            )
         return data
 
 
