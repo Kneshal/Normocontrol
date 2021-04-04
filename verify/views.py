@@ -1,13 +1,15 @@
 from django.contrib.auth import get_user_model
-from django.shortcuts import redirect, render, get_object_or_404
-
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import (CheckForm, GroupForm, RemarkStandartErrorForm,
-                    RemarkNavForm, RemarkEditForm)
-from .models import CheckOut, Remark
 from users.models import Group
+
+from .forms import (
+    CheckForm, GroupForm, RemarkEditForm, RemarkNavForm,
+    RemarkStandartErrorForm,
+)
+from .models import CheckOut, Remark
 
 User = get_user_model()
 

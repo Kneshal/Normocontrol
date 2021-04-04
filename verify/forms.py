@@ -1,8 +1,9 @@
 from django import forms
 
-from .models import CheckOut, Remark
 from users.models import Group
+
 from . import constants as cts
+from .models import CheckOut, Remark
 
 
 class RemarkNavForm(forms.Form):

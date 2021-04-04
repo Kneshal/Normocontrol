@@ -1,33 +1,32 @@
 <ul class="list-group list-group-flush"></ul>
 {% for item in check_item.remark.all %}
 <li class="list-group-item">
-            <h6 class="mt-0">
-                Замечание № {{ forloop.counter }}
-            </h6>
-            {{ item.section }}            
-            {% if item.page_number %}
-                - страница {{ item.page_number }}
-            {% endif %}
-            
-            
-            {% if item.paragraph %}
-                - абзац {{ item.paragraph }}
-            {% endif %}
-            <br>
-            Описание: {{ item.text }}<br>
+  <h6 class="mt-0">
+    Замечание № {{ forloop.counter }}
+  </h6>
+  {{ item.section }}
+  {% if item.page_number %}
+  - страница {{ item.page_number }}
+  {% endif %}
 
-            {% if item.check_all %}
-                <span class="text-danger"><b>Проверить по всей работе</b><br></span>
-            {% endif %}
-            <small class="text-muted">{{ item.check_date }}</small><br>
-            
-            {% if user.allow_manage %}
-            <a class="btn btn-secondary btn-sm mt-1" href="{% url 'verify:delete_remark' username check_item.id item.id %}" role="button">
-                Удалить
-            </a>
-            <a class="btn btn-danger btn-sm mt-1" href="{% url 'verify:edit_remark' username check_item.id item.id %}" role="button">
-                Редактировать
-            </a>
-            {% endif %}
-        </li>
+  {% if item.paragraph %}
+  - абзац {{ item.paragraph }}
+  {% endif %}
+  <br>
+  Описание: {{ item.text }}<br>
+
+  {% if item.check_all %}
+  <span class="text-danger"><b>Проверить по всей работе</b><br></span>
+  {% endif %}
+  <small class="text-muted">{{ item.check_date }}</small><br>
+
+  {% if user.allow_manage %}
+  <a class="btn btn-secondary btn-sm mt-1" href="{% url 'verify:delete_remark' username check_item.id item.id %}" role="button">
+    Удалить
+  </a>
+  <a class="btn btn-danger btn-sm mt-1" href="{% url 'verify:edit_remark' username check_item.id item.id %}" role="button">
+    Редактировать
+  </a>
+  {% endif %}
+</li>
 {% endfor %}

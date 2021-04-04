@@ -8,10 +8,10 @@ from django.core.paginator import Page
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
-from verify.models import CheckOut, Remark
-from users.models import Group
-from verify.tests import constants as cts
 from normocontrol.settings import MEDIA_ROOT
+from users.models import Group
+from verify.models import CheckOut, Remark
+from verify.tests import constants as cts
 
 User = get_user_model()
 

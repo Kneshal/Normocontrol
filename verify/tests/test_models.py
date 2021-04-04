@@ -1,9 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
+from users.models import CustomUser, Group
 from verify.models import CheckOut, Remark
 from verify.tests import constants as cts
-from users.models import Group, CustomUser
 
 User = get_user_model()
 

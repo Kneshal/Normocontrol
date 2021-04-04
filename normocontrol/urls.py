@@ -15,8 +15,8 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls import handler400, handler403, handler404, handler500
-from django.contrib import admin
 from django.conf.urls.static import static
+from django.contrib import admin
 from django.urls import include, path
 
 handler400 = "verify.views.bad_request"  # noqa

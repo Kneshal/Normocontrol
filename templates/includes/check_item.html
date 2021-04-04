@@ -10,56 +10,56 @@
     {% if check_item.docx_file and check_item.pdf_file %}
     <li class="list-group-item">
       <strong>Диплом:</strong> <a class="link-danger" href="{{ check_item.docx_file.url }}">скачать docx</a>, <a class="link-danger" href="{{ check_item.pdf_file.url }}">скачать pdf</a>
-    </li> 
+    </li>
     {% endif %}
     <li class="list-group-item">
       <strong>Сопроводительная информация:</strong> {{ check_item.info }}
-    </li>    
+    </li>
     <li class="list-group-item">
-      <strong>Статус: </strong> 
+      <strong>Статус: </strong>
       {% if not check_item.status %}
-        Работа ожидает проверки
+      Работа ожидает проверки
       {% else %}
-        Работа проверена
-        {% if check_item.remark.exists %}
-          - требуется исправить замечания
-        {% else %}
-          - замечаний нет
-        {% endif %}
+      Работа проверена
+      {% if check_item.remark.exists %}
+      - требуется исправить замечания
+      {% else %}
+      - замечаний нет
+      {% endif %}
       {% endif %}
     </li>
 
     <li class="list-group-item">
       {% if check_item.remark.exists %}
-        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{ check_item.id }}">
-          Показать замечания ({{ check_item.remark.count}})
-        </button>
+      <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{ check_item.id }}">
+        Показать замечания ({{ check_item.remark.count}})
+      </button>
       {% endif %}
       {% if not check_item.status %}
-        {% if user.allow_manage  %}
-          <a class="btn btn-outline-dark" href="{% url 'verify:check_view' user.username check_item.id %}" role="button">
-            Проверить работу
-          </a>
-          <a class="btn btn-outline-secondary" href="{% url 'verify:check_archive' user.username check_item.id %}" role="button">
-            В архив
-          </a>
-        {% else %}
-          <a class="btn btn-outline-dark" href="{% url 'verify:check_delete' user.username check_item.id %}" role="button">
-            Отменить проверку
-          </a>
-        {% endif %}
+      {% if user.allow_manage  %}
+      <a class="btn btn-outline-dark" href="{% url 'verify:check_view' user.username check_item.id %}" role="button">
+        Проверить работу
+      </a>
+      <a class="btn btn-outline-secondary" href="{% url 'verify:check_archive' user.username check_item.id %}" role="button">
+        В архив
+      </a>
       {% else %}
-        {% if user.allow_manage  %}
-          <a class="btn btn-outline-dark" href="{% url 'verify:check_view' user.username check_item.id %}" role="button">
-            Подробнее
-          </a>
-          <a class="btn btn-outline-success" href="{% url 'verify:check_active' user.username check_item.id %}" role="button">
-            Вернуть в работу
-          </a>
-          <a class="btn btn-outline-secondary" href="{% url 'verify:check_delete' user.username check_item.id %}" role="button">
-            Удалить
-          </a>
-        {% endif %}
+      <a class="btn btn-outline-dark" href="{% url 'verify:check_delete' user.username check_item.id %}" role="button">
+        Отменить проверку
+      </a>
+      {% endif %}
+      {% else %}
+      {% if user.allow_manage  %}
+      <a class="btn btn-outline-dark" href="{% url 'verify:check_view' user.username check_item.id %}" role="button">
+        Подробнее
+      </a>
+      <a class="btn btn-outline-success" href="{% url 'verify:check_active' user.username check_item.id %}" role="button">
+        Вернуть в работу
+      </a>
+      <a class="btn btn-outline-secondary" href="{% url 'verify:check_delete' user.username check_item.id %}" role="button">
+        Удалить
+      </a>
+      {% endif %}
       {% endif %}
     </li>
   </ul>

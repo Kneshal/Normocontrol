@@ -2,14 +2,14 @@
 {% block title %}Текущие проверки{% endblock %}
 {% block header %}
 {% if student_check %}
-    Работа студента - {{ student_check.student.get_full_name}}
+Работа студента - {{ student_check.student.get_full_name}}
 {% else %}
-    Работа еще не отправлена на проверку
+Работа еще не отправлена на проверку
 {% endif %}
 {% endblock %}
 {% block description %}{% endblock %}
 {% block content %}
-    {% if student_check %}
-        {% include "includes/check_item.html" with check_item=student_check username=student_check.student.username %}
-    {% endif %}
-{% endblock %} 
+{% if student_check %}
+{% include "includes/check_item.html" with check_item=student_check username=student_check.student.username %}
+{% endif %}
+{% endblock %}
