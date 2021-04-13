@@ -7,12 +7,12 @@ class Group(models.Model):
     title = models.CharField(
         verbose_name='Название группы',
         help_text='Введите название группы',
-        max_length=200
+        max_length=200,
     )
     slug = models.SlugField(
         verbose_name='Slug-метка',
         help_text='Укажите адрес для страницы группы',
-        unique=True
+        unique=True,
     )
 
     def save(self, *args, **kwargs):
