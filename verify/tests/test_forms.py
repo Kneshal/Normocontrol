@@ -8,10 +8,10 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
+from normocontrol.settings import MEDIA_ROOT
 from users.models import Group
 from verify.models import CheckOut, Remark
 from verify.tests import constants as cts
-from normocontrol.settings import MEDIA_ROOT
 
 User = get_user_model()
 
