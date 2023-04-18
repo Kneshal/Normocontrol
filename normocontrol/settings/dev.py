@@ -2,13 +2,16 @@ from .base import *  # noqa
 
 DEBUG = True
 
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+]
+
+SECRET_KEY = 'testkey'
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('DB_NAME'),  # noqa
-        'USER': config('DB_USER'),  # noqa
-        'PASSWORD': config('DB_PASSWORD'),  # noqa
-        'HOST': config('DB_HOST'),  # noqa
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite3',
     }
 }
