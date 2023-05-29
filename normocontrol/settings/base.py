@@ -14,15 +14,13 @@ import os
 
 from pathlib import Path
 
-from decouple import Csv, config
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS')
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
