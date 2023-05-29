@@ -9,6 +9,7 @@ ALLOWED_HOSTS = [
 
 SECRET_KEY = 'testkey'
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
