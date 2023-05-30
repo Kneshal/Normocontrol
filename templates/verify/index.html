@@ -1,7 +1,193 @@
 {% extends "verify/base.html" %}
-{% block title %}Главная страница нормоконтроля{% endblock %}
-{% block header %}{% endblock %}
+{% block title %}
+Главная страница нормоконтроля
+{% endblock %}
+{% block header %}
+{% endblock %}
 {% block description %}{% endblock %}
 {% block content %}
-Здесь будет описание проекта со ссылками на полезные источники и примеры
+{% load static %}
+
+    <div class="container">
+        <p class="mt-2">
+            <strong>
+            Полная версия методических рекомендаций по оформлению выпускной квалификационной работы (ВКР) - <a href="{% static 'manual.pdf' %}">скачать pdf</a>
+        </strong>
+        </p>
+        <p class="text-center fs-2">
+            Методические рекомендации по оформлению выпускной квалификационной работы
+        </p>
+        <p class="mb-1" style="font-size: 14pt">
+            <a href="{% url 'verify:manual' %}#m1">
+                1 Общие положения выполнения выпускной квалификационной работы	
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m1_1">
+                1.1 Цели и задачи выполнения квалификационной работы бакалавра
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m1_2">
+                1.2	Подготовка к выполнению квалификационной работы бакалавра
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m1_3">
+                1.3	Основные требования, предъявляемые к выпускной квалификационной работе бакалавра
+            </a>
+        </p>
+        <p class="mb-1" style="font-size: 14pt">
+            <a href="{% url 'verify:manual' %}#m2">
+                2 Требования к содержанию разделов	пояснительной записки
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m2_1">
+                2.1	Структура пояснительной записки	квалификационной работы бакалавра
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m2_2">
+            2.2	Титульный лист, задание и график выполнения ВКР
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m2_3">
+            2.3	Реферат
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m2_4">
+            2.4	Содержание
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m2_5">
+            2.5	Перечень используемых условных	обозначений, сокращений, терминов
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m2_6">
+            2.6	Введение
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m2_7">
+            2.7	Анализ технического задания и состояние	проблемы
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m2_8">
+            2.8	Второй и последующие разделы
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m2_9">
+            2.9	Заключение
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m2_10">
+            2.10 Список использованных источников
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m2_11">
+            2.11 Приложения	
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m2_12">
+            2.12 Требования к брошюровке пояснительной записки ВКР
+            </a>
+        </p>
+        <p class="mb-1" style="font-size: 14pt">
+            <a href="{% url 'verify:manual' %}#m3">
+                3 Правила оформления пояснительной записки
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m3_1">
+            3.1	Общие положения
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m3_2">
+            3.2	Построение отчета
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m3_3">
+            3.3	Оформление иллюстраций и приложений
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m3_4">
+            3.4	Построение таблиц
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m3_5">
+            3.5	Правила оформления графических	документов
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m3_6">
+            3.6	Правила оформления схем
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m3_7">
+            3.7	Правила оформления чертежей печатных плат
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m3_8">
+            3.8	Правила оформления программных	документов
+            </a>
+        </p>
+        <p class="mb-1" style="margin-left: 0.18in;">
+            <a href="{% url 'verify:manual' %}#m3_9">
+            3.9	Правила оформления списка использованных источников
+            </a>
+        </p>
+
+        
+        <p class="mb-1" style="font-size: 14pt">
+            <a href="{% url 'verify:manual' %}#m_p_a">
+                ПРИЛОЖЕНИЕ А. Титульный лист ВКР
+            </a>
+        </p>
+        <p class="mb-1" style="font-size: 14pt">
+            <a href="{% url 'verify:manual' %}#m_p_b">
+                ПРИЛОЖЕНИЕ Б. Задание на ВКР 
+            </a>
+        </p>
+        <p class="mb-1" style="font-size: 14pt">
+            <a href="{% url 'verify:manual' %}#m_p_v">
+                ПРИЛОЖЕНИЕ В. Календарный график выполнения выпускной квалификационной работы
+            </a>
+        </p>
+        <p class="mb-1" style="font-size: 14pt">
+            <a href="{% url 'verify:manual' %}#m_p_g">
+                ПРИЛОЖЕНИЕ Г. Пример написания реферата
+            </a>
+        </p>
+        <p class="mb-1" style="font-size: 14pt">
+            <a href="{% url 'verify:manual' %}#m_p_d">
+                ПРИЛОЖЕНИЕ Д. Основная надпись и дополнительные графы для текстовых конструкторских документов (первый или заглавный лист)
+            </a>
+        </p>
+        <p class="mb-1" style="font-size: 14pt">
+            <a href="{% url 'verify:manual' %}#m_p_e">
+                ПРИЛОЖЕНИЕ Е. Основная надпись и дополнительные графы для чертежей (схем) и текстовых конструкторских документов (последующие листы)
+            </a>
+        </p>
+        <p class="mb-1" style="font-size: 14pt">
+            <a href="{% url 'verify:manual' %}#m_p_zh">
+                ПРИЛОЖЕНИЕ Ж. Основная надпись и дополнительные графы для чертежей и схем
+            </a>
+        </p>
+
 {% endblock %}

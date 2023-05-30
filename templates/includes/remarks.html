@@ -13,7 +13,7 @@
   - абзац {{ item.paragraph }}
   {% endif %}
   <br>
-  Описание: {{ item.text }}<br>
+  Описание: {{ item.text|safe }}<br>
 
   {% if item.check_all %}
   <span class="text-danger"><b>Проверить по всей работе</b><br></span>

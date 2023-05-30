@@ -6,7 +6,8 @@ app_name = 'verify'
 
 # Главные страницы
 urlpatterns = [
-     path('', views.index, name='index')
+     path('', views.index, name='index'),
+     path('manual/', views.manual, name='manual')
 ]
 
 # Студенты

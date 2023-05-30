@@ -12,15 +12,13 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
-from pathlib import Path
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS')
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
 SECRET_KEY = os.getenv('SECRET_KEY')
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -77,8 +75,8 @@ LOGIN_URL = 'login'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 

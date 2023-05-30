@@ -1,3 +1,6 @@
+
+import os
+
 from .base import *  # noqa
 
 DEBUG = True
@@ -7,12 +10,13 @@ ALLOWED_HOSTS = [
     'localhost',
 ]
 
-SECRET_KEY = 'testkey'
-
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('DB_NAME'),  # noqa
+        'USER': os.environ.get('DB_USER'),  # noqa
+        'PASSWORD': os.environ.get('DB_PASSWORD'),  # noqa
+        'HOST': os.environ.get('DB_HOST'),  # noqa
+        'PORT': os.environ.get('DB_PORT'),  # noqa
     }
 }

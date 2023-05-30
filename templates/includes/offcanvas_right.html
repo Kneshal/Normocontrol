@@ -1,0 +1,44 @@
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+      <h5 id="offcanvasRightLabel">Прошлые проверки</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+    {% for checkout in checkout_list %}
+      <div class="d-grid gap-1 mb-2">
+        <a class="btn btn-danger" data-bs-toggle="collapse" href="#collapse_{{ forloop.counter }}" role="button" aria-expanded="false" aria-controls="collapse_{{ forloop.counter }}">
+         Замечания от {{checkout.check_date}}
+        </a>
+      </div>  
+   
+      <div class="collapse" id="collapse_{{ forloop.counter }}">
+        <div class="card card-body">
+          <ul class="list-group list-group-flush"></ul>
+          {% for item in checkout.remark.all %}
+          <li class="list-group-item">
+            <h6 class="mt-0">
+              Замечание № {{ forloop.counter }}
+            </h6>
+            {{ item.section }}
+            {% if item.page_number %}
+            - страница {{ item.page_number }}
+            {% endif %}
+
+            {% if item.paragraph %}
+            - абзац {{ item.paragraph }}
+            {% endif %}
+            <br>
+            Описание: {{ item.text }}<br>
+
+            {% if item.check_all %}
+            <span class="text-danger"><b>Проверить по всей работе</b><br></span>
+            {% endif %}
+            <small class="text-muted">{{ item.check_date }}</small><br>
+
+          </li>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>

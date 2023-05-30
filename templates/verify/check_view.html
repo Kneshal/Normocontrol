@@ -19,6 +19,14 @@
     <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
       Показать замечания ({{ check_item.remark.count}})
     </button>
+    {% if checkout_list %}
+    <a class="btn btn-secondary mb-2" data-bs-toggle="offcanvas" href="#offcanvasRight" role="button" aria-controls="offcanvasRight">
+      Прошлые проверки ({{ checkout_list.count }})
+    </a>
+   
+
+
+    {% endif %}
     {% if not check_item.status %}
     <a type="button" class="btn btn-success mb-2" href="{% url 'verify:check_archive' username check_item.id %}" role="button">
       Завершить проверку
@@ -237,4 +245,5 @@
     </div>
   </form>
 </div>
+{% include "includes/offcanvas_right.html" %}
 {% endblock %}

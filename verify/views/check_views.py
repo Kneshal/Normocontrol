@@ -49,12 +49,20 @@ def check_view(request, username, check_id):
     form_1 = RemarkNavForm(request.POST or None)
     form_2 = RemarkStandartErrorForm(request.POST or None)
     remarks = check_item.remark.all()
+    
+    # Вывод прошлых замечаний
+    student = check_item.student
+    checkout_list = CheckOut.objects.filter(
+        student=student
+    ).exclude(id=check_item.id)
+
     context = {
         'username': username,
         'check_item': check_item,
         'remarks': remarks,
         'form_1': form_1,
         'form_2': form_2,
+        'checkout_list': checkout_list,
     }
     return render(request, 'verify/check_view.html', context)
 

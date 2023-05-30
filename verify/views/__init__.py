@@ -15,6 +15,6 @@ from .group_views import new_group  # noqa
 from .remark_views import add_remark  # noqa
 from .remark_views import delete_remark  # noqa
 from .remark_views import edit_remark  # noqa
-from .static_pages import index  # noqa
+from .static_pages import index, manual  # noqa
 from .student_views import student_active_check  # noqa
 from .student_views import student_list  # noqa

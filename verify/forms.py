@@ -1,7 +1,7 @@
 from django import forms
 
 from users.models import Group
-
+from django.utils.safestring import mark_safe
 from . import constants as cts
 from .models import CheckOut, Remark
 
@@ -48,48 +48,48 @@ class RemarkEditForm(forms.ModelForm):
 class RemarkStandartErrorForm(forms.Form):
     """Форма выбора замечания."""
     # [ERROR_MAIN]
-    err_main_1 = forms.BooleanField(label=cts.ERROR_MAIN_1, required=False)
-    err_main_2 = forms.BooleanField(label=cts.ERROR_MAIN_2, required=False)
-    err_main_3 = forms.BooleanField(label=cts.ERROR_MAIN_3, required=False)
-    err_main_4 = forms.BooleanField(label=cts.ERROR_MAIN_4, required=False)
-    err_main_5 = forms.BooleanField(label=cts.ERROR_MAIN_5, required=False)
-    err_main_6 = forms.BooleanField(label=cts.ERROR_MAIN_6, required=False)
-    err_main_7 = forms.BooleanField(label=cts.ERROR_MAIN_7, required=False)
-    err_main_8 = forms.BooleanField(label=cts.ERROR_MAIN_8, required=False)
+    err_main_1 = forms.BooleanField(label=mark_safe(cts.ERROR_MAIN_1), required=False)
+    err_main_2 = forms.BooleanField(label=mark_safe(cts.ERROR_MAIN_2), required=False)
+    err_main_3 = forms.BooleanField(label=mark_safe(cts.ERROR_MAIN_3), required=False)
+    err_main_4 = forms.BooleanField(label=mark_safe(cts.ERROR_MAIN_4), required=False)
+    err_main_5 = forms.BooleanField(label=mark_safe(cts.ERROR_MAIN_5), required=False)
+    err_main_6 = forms.BooleanField(label=mark_safe(cts.ERROR_MAIN_6), required=False)
+    err_main_7 = forms.BooleanField(label=mark_safe(cts.ERROR_MAIN_7), required=False)
+    err_main_8 = forms.BooleanField(label=mark_safe(cts.ERROR_MAIN_8), required=False)
     # [ERROR_TEXT]
-    err_text_1 = forms.BooleanField(label=cts.ERROR_TEXT_1, required=False)
-    err_text_2 = forms.BooleanField(label=cts.ERROR_TEXT_2, required=False)
-    err_text_3 = forms.BooleanField(label=cts.ERROR_TEXT_3, required=False)
-    err_text_4 = forms.BooleanField(label=cts.ERROR_TEXT_4, required=False)
+    err_text_1 = forms.BooleanField(label=mark_safe(cts.ERROR_TEXT_1), required=False)
+    err_text_2 = forms.BooleanField(label=mark_safe(cts.ERROR_TEXT_2), required=False)
+    err_text_3 = forms.BooleanField(label=mark_safe(cts.ERROR_TEXT_3), required=False)
+    err_text_4 = forms.BooleanField(label=mark_safe(cts.ERROR_TEXT_4), required=False)
     # [ERROR_HEADERS]
-    err_header_1 = forms.BooleanField(label=cts.ERROR_HEAD_1, required=False)
-    err_header_2 = forms.BooleanField(label=cts.ERROR_HEAD_2, required=False)
-    err_header_3 = forms.BooleanField(label=cts.ERROR_HEAD_3, required=False)
+    err_header_1 = forms.BooleanField(label=mark_safe(cts.ERROR_HEAD_1), required=False)
+    err_header_2 = forms.BooleanField(label=mark_safe(cts.ERROR_HEAD_2), required=False)
+    err_header_3 = forms.BooleanField(label=mark_safe(cts.ERROR_HEAD_3), required=False)
     # [ERROR_LIST]
-    err_list_1 = forms.BooleanField(label=cts.ERROR_LIST_1, required=False)
+    err_list_1 = forms.BooleanField(label=mark_safe(cts.ERROR_LIST_1), required=False)
     # [ERROR_TABLE]
-    err_table_1 = forms.BooleanField(label=cts.ERROR_TABLE_1, required=False)
-    err_table_2 = forms.BooleanField(label=cts.ERROR_TABLE_2, required=False)
-    err_table_3 = forms.BooleanField(label=cts.ERROR_TABLE_3, required=False)
-    err_table_4 = forms.BooleanField(label=cts.ERROR_TABLE_4, required=False)
+    err_table_1 = forms.BooleanField(label=mark_safe(cts.ERROR_TABLE_1), required=False)
+    err_table_2 = forms.BooleanField(label=mark_safe(cts.ERROR_TABLE_2), required=False)
+    err_table_3 = forms.BooleanField(label=mark_safe(cts.ERROR_TABLE_3), required=False)
+    err_table_4 = forms.BooleanField(label=mark_safe(cts.ERROR_TABLE_4), required=False)
     # [ERROR_IMAGE]
-    err_image_1 = forms.BooleanField(label=cts.ERROR_IMAGE_1, required=False)
-    err_image_2 = forms.BooleanField(label=cts.ERROR_IMAGE_2, required=False)
-    err_image_3 = forms.BooleanField(label=cts.ERROR_IMAGE_3, required=False)
-    err_image_4 = forms.BooleanField(label=cts.ERROR_IMAGE_4, required=False)
+    err_image_1 = forms.BooleanField(label=mark_safe(cts.ERROR_IMAGE_1), required=False)
+    err_image_2 = forms.BooleanField(label=mark_safe(cts.ERROR_IMAGE_2), required=False)
+    err_image_3 = forms.BooleanField(label=mark_safe(cts.ERROR_IMAGE_3), required=False)
+    err_image_4 = forms.BooleanField(label=mark_safe(cts.ERROR_IMAGE_4), required=False)
     # [ERROR_FORMULA]
-    err_formula_1 = forms.BooleanField(label=cts.ERROR_FORMULA_1,
+    err_formula_1 = forms.BooleanField(label=mark_safe(cts.ERROR_FORMULA_1),
                                        required=False)
-    err_formula_2 = forms.BooleanField(label=cts.ERROR_FORMULA_2,
+    err_formula_2 = forms.BooleanField(label=mark_safe(cts.ERROR_FORMULA_2),
                                        required=False)
-    err_formula_3 = forms.BooleanField(label=cts.ERROR_FORMULA_3,
+    err_formula_3 = forms.BooleanField(label=mark_safe(cts.ERROR_FORMULA_3),
                                        required=False)
     # [ERROR_FRAME]
-    err_frame_1 = forms.BooleanField(label=cts.ERROR_FRAME_1, required=False)
-    err_frame_2 = forms.BooleanField(label=cts.ERROR_FRAME_2, required=False)
+    err_frame_1 = forms.BooleanField(label=mark_safe(cts.ERROR_FRAME_1), required=False)
+    err_frame_2 = forms.BooleanField(label=mark_safe(cts.ERROR_FRAME_2), required=False)
     # [ERROR_LINK]
-    err_link_1 = forms.BooleanField(label=cts.ERROR_LINK_1, required=False)
-    err_link_2 = forms.BooleanField(label=cts.ERROR_LINK_2, required=False)
+    err_link_1 = forms.BooleanField(label=mark_safe(cts.ERROR_LINK_1), required=False)
+    err_link_2 = forms.BooleanField(label=mark_safe(cts.ERROR_LINK_2), required=False)
 
 
 class CheckForm(forms.ModelForm):
