@@ -5,31 +5,18 @@ python -m venv venv # Установка виртуального окружен
 source venv/Scripts/activate # Запуск виртуального окружения проекта
 
 [Установка]
-pip install Django==2.2 # Установка Django версии 2.2
-django-admin startproject [project name] # Создание нового проекта
-python manage.py startapp [app name] # Создать новое приложение
-python manage.py --help # Справка
+pip install Django # Установка Django
 
 [Запуск сервера]
 python manage.py runserver # Запустить проект
 http://127.0.0.1:8000/ # Адрес сервера
-Ctrl + C # Закрыть сервер
 
 [Тестирование]
-python manage.py test # Запуск всех тестов. Опционально аргумент -v 2 или -v 3
-coverage run --source='verify,users' manage.py test -v 2 # Оценка покрытия тестами
-coverage report # Проверка отчета покрытия тестами
-python manage.py test verify # Запустит только тесты в приложении posts
-python manage.py test verify.tests.test_urls # Запустит только тесты из файла test_urls.py в приложении posts
-python manage.py test verify.tests.test_urls.StaticURLTests # Запустит только тесты из класса StaticURLTests для test_urls.py в приложении posts  
-python manage.py test verify.tests.test_urls.StaticURLTests.test_homepage # Запустит только тест test_homepage() из класса StaticURLTests для test_urls.py в приложении posts 
+python manage.py test # Запуск всех тестов
 
 [Миграции]
 python manage.py makemigrations # Запускаем скрипт миграции
 python manage.py migrate # Сохраняем миграции
-python manage.py show migrations # показать статус миграций
-python manage.py sqlmigrate posts 0001_initial # показать SQL-код миграции
-python manage.py migrate posts 0001_initial # миграция для определенной модели
 
 [Суперпользователь]
 python manage.py createsuperuser # Создание суперпользователя
@@ -38,9 +25,3 @@ python manage.py collectstatic # Сбор статических файлов в
 [Зависимости]
 pip freeze > requirements.txt # Создание файла с зависимостями для готового проекта
 pip install -r requirements.txt # Установка всех зависимостей проекта
-
-[Консоль]
-$ python manage.py shell # открыть интерактиувную консоль для экспериментов
-
-[PEP8]
-isort . # Сортирует импорты согласно PEP8
