@@ -3,9 +3,18 @@ from .base import *  # noqa
 
 DEBUG = False
 
-ALLOWED_HOSTS = [
-    '*',
-]
+ALLOWED_HOSTS = ['95.163.242.7', '95-163-242-7.cloudvps.regruhosting.ru']
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'django_project_db',
+        'USER': 'django',
+        'PASSWORD': 'пароль_из_приветствия',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
