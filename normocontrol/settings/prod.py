@@ -3,7 +3,7 @@ from .base import *  # noqa
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['95.163.242.7', '95-163-242-7.cloudvps.regruhosting.ru']
+ALLOWED_HOSTS = ['95.163.242.7', 'normocontrol22.ru', 'www.normocontrol22.ru', '95-163-242-7.cloudvps.regruhosting.ru']
 
 DATABASES = {
     'default': {
